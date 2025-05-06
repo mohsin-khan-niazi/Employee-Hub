@@ -9,14 +9,11 @@ import { FilterUserDto, SortUserDto } from './dto/query-user.dto';
 import { UserRepository } from './infrastructure/persistence/user.repository';
 import { User } from './domain/user';
 import bcrypt from 'bcryptjs';
-import { AuthProvidersEnum } from '../auth/auth-providers.enum';
 import { FilesService } from '../files/files.service';
 import { RoleEnum } from '../roles/roles.enum';
 import { StatusEnum } from '../statuses/statuses.enum';
 import { IPaginationOptions } from '../utils/types/pagination-options';
 import { FileType } from '../files/domain/file';
-import { Role } from '../roles/domain/role';
-import { Status } from '../statuses/domain/status';
 import { UpdateUserDto } from './dto/update-user.dto';
 
 @Injectable()
@@ -27,9 +24,6 @@ export class UsersService {
   ) {}
 
   async create(createUserDto: CreateUserDto): Promise<User> {
-    // Do not remove comment below.
-    // <creating-property />
-
     let password: string | undefined = undefined;
 
     if (createUserDto.password) {
@@ -73,12 +67,12 @@ export class UsersService {
       photo = null;
     }
 
-    let role: Role | undefined = undefined;
+    let role: string | undefined = undefined;
 
-    if (createUserDto.role?.id) {
+    if (createUserDto.role) {
       const roleObject = Object.values(RoleEnum)
         .map(String)
-        .includes(String(createUserDto.role.id));
+        .includes(String(createUserDto.role));
       if (!roleObject) {
         throw new UnprocessableEntityException({
           status: HttpStatus.UNPROCESSABLE_ENTITY,
@@ -88,17 +82,15 @@ export class UsersService {
         });
       }
 
-      role = {
-        id: createUserDto.role.id,
-      };
+      role = createUserDto.role;
     }
 
-    let status: Status | undefined = undefined;
+    let status: string | undefined = undefined;
 
-    if (createUserDto.status?.id) {
+    if (createUserDto.status) {
       const statusObject = Object.values(StatusEnum)
         .map(String)
-        .includes(String(createUserDto.status.id));
+        .includes(String(createUserDto.status));
       if (!statusObject) {
         throw new UnprocessableEntityException({
           status: HttpStatus.UNPROCESSABLE_ENTITY,
@@ -108,14 +100,10 @@ export class UsersService {
         });
       }
 
-      status = {
-        id: createUserDto.status.id,
-      };
+      status = createUserDto.status;
     }
 
     return this.usersRepository.create({
-      // Do not remove comment below.
-      // <creating-property-payload />
       firstName: createUserDto.firstName,
       lastName: createUserDto.lastName,
       email: email,
@@ -123,8 +111,6 @@ export class UsersService {
       photo: photo,
       role: role,
       status: status,
-      provider: createUserDto.provider ?? AuthProvidersEnum.email,
-      socialId: createUserDto.socialId,
     });
   }
 
@@ -156,26 +142,10 @@ export class UsersService {
     return this.usersRepository.findByEmail(email);
   }
 
-  findBySocialIdAndProvider({
-    socialId,
-    provider,
-  }: {
-    socialId: User['socialId'];
-    provider: User['provider'];
-  }): Promise<NullableType<User>> {
-    return this.usersRepository.findBySocialIdAndProvider({
-      socialId,
-      provider,
-    });
-  }
-
   async update(
     id: User['id'],
     updateUserDto: UpdateUserDto,
   ): Promise<User | null> {
-    // Do not remove comment below.
-    // <updating-property />
-
     let password: string | undefined = undefined;
 
     if (updateUserDto.password) {
@@ -227,12 +197,12 @@ export class UsersService {
       photo = null;
     }
 
-    let role: Role | undefined = undefined;
+    let role: string | undefined = undefined;
 
-    if (updateUserDto.role?.id) {
+    if (updateUserDto.role) {
       const roleObject = Object.values(RoleEnum)
         .map(String)
-        .includes(String(updateUserDto.role.id));
+        .includes(String(updateUserDto.role));
       if (!roleObject) {
         throw new UnprocessableEntityException({
           status: HttpStatus.UNPROCESSABLE_ENTITY,
@@ -242,17 +212,15 @@ export class UsersService {
         });
       }
 
-      role = {
-        id: updateUserDto.role.id,
-      };
+      role = updateUserDto.role;
     }
 
-    let status: Status | undefined = undefined;
+    let status: string | undefined = undefined;
 
-    if (updateUserDto.status?.id) {
+    if (updateUserDto.status) {
       const statusObject = Object.values(StatusEnum)
         .map(String)
-        .includes(String(updateUserDto.status.id));
+        .includes(String(updateUserDto.status));
       if (!statusObject) {
         throw new UnprocessableEntityException({
           status: HttpStatus.UNPROCESSABLE_ENTITY,
@@ -262,14 +230,10 @@ export class UsersService {
         });
       }
 
-      status = {
-        id: updateUserDto.status.id,
-      };
+      status = updateUserDto.status;
     }
 
     return this.usersRepository.update(id, {
-      // Do not remove comment below.
-      // <updating-property-payload />
       firstName: updateUserDto.firstName,
       lastName: updateUserDto.lastName,
       email,
@@ -277,8 +241,6 @@ export class UsersService {
       photo,
       role,
       status,
-      provider: updateUserDto.provider,
-      socialId: updateUserDto.socialId,
     });
   }
 

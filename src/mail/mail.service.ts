@@ -15,7 +15,7 @@ export class MailService {
     private readonly configService: ConfigService<AllConfigType>,
   ) {}
 
-  async userSignUp(mailData: MailData<{ hash: string }>): Promise<void> {
+  async userSignUp(mailData: MailData<{ token: string }>): Promise<void> {
     const i18n = I18nContext.current();
     let emailConfirmTitle: MaybeType<string>;
     let text1: MaybeType<string>;
@@ -36,7 +36,7 @@ export class MailService {
         infer: true,
       }) + '/confirm-email',
     );
-    url.searchParams.set('hash', mailData.data.hash);
+    url.searchParams.set('token', mailData.data.token);
 
     await this.mailerService.sendMail({
       to: mailData.to,

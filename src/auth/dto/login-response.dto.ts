@@ -6,9 +6,6 @@ export class LoginResponseDto {
   token: string;
 
   @ApiProperty()
-  refreshToken: string;
-
-  @ApiProperty()
   tokenExpires: number;
 
   @ApiProperty({

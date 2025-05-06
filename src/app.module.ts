@@ -7,17 +7,12 @@ import authConfig from './auth/config/auth.config';
 import appConfig from './config/app.config';
 import mailConfig from './mail/config/mail.config';
 import fileConfig from './files/config/file.config';
-import googleConfig from './auth-google/config/google.config';
-import appleConfig from './auth-apple/config/apple.config';
 import path from 'path';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { AuthAppleModule } from './auth-apple/auth-apple.module';
-import { AuthGoogleModule } from './auth-google/auth-google.module';
 import { HeaderResolver, I18nModule } from 'nestjs-i18n';
 import { MailModule } from './mail/mail.module';
 import { HomeModule } from './home/home.module';
 import { AllConfigType } from './config/config.type';
-import { SessionModule } from './session/session.module';
 import { MailerModule } from './mailer/mailer.module';
 import { MongooseModule } from '@nestjs/mongoose';
 import { MongooseConfigService } from './database/mongoose-config.service';
@@ -30,15 +25,7 @@ const infrastructureDatabaseModule = MongooseModule.forRootAsync({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      load: [
-        databaseConfig,
-        authConfig,
-        appConfig,
-        mailConfig,
-        fileConfig,
-        googleConfig,
-        appleConfig,
-      ],
+      load: [databaseConfig, authConfig, appConfig, mailConfig, fileConfig],
       envFilePath: ['.env'],
     }),
     infrastructureDatabaseModule,
@@ -68,9 +55,6 @@ const infrastructureDatabaseModule = MongooseModule.forRootAsync({
     UsersModule,
     FilesModule,
     AuthModule,
-    AuthGoogleModule,
-    AuthAppleModule,
-    SessionModule,
     MailModule,
     MailerModule,
     HomeModule,

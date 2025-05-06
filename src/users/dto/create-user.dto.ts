@@ -1,19 +1,7 @@
-import {
-  // decorators here
-  Transform,
-  Type,
-} from 'class-transformer';
+import { Transform } from 'class-transformer';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import {
-  // decorators here
-  IsEmail,
-  IsNotEmpty,
-  IsOptional,
-  MinLength,
-} from 'class-validator';
+import { IsEmail, IsNotEmpty, IsOptional, MinLength } from 'class-validator';
 import { FileDto } from '../../files/dto/file.dto';
-import { RoleDto } from '../../roles/dto/role.dto';
-import { StatusDto } from '../../statuses/dto/status.dto';
 import { lowerCaseTransformer } from '../../utils/transformers/lower-case.transformer';
 
 export class CreateUserDto {
@@ -27,10 +15,6 @@ export class CreateUserDto {
   @MinLength(6)
   password?: string;
 
-  provider?: string;
-
-  socialId?: string | null;
-
   @ApiProperty({ example: 'John', type: String })
   @IsNotEmpty()
   firstName: string | null;
@@ -43,13 +27,11 @@ export class CreateUserDto {
   @IsOptional()
   photo?: FileDto | null;
 
-  @ApiPropertyOptional({ type: RoleDto })
+  @ApiPropertyOptional({ type: String })
   @IsOptional()
-  @Type(() => RoleDto)
-  role?: RoleDto | null;
+  role?: string | null;
 
-  @ApiPropertyOptional({ type: StatusDto })
+  @ApiPropertyOptional({ type: String })
   @IsOptional()
-  @Type(() => StatusDto)
-  status?: StatusDto;
+  status?: string | null;
 }

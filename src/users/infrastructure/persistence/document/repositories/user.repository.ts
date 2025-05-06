@@ -36,7 +36,7 @@ export class UsersDocumentRepository implements UserRepository {
     const where: FilterQuery<UserSchemaClass> = {};
     if (filterOptions?.roles?.length) {
       where['role._id'] = {
-        $in: filterOptions.roles.map((role) => role.id.toString()),
+        $in: filterOptions.roles.map((role) => role.toString()),
       };
     }
 
@@ -72,23 +72,6 @@ export class UsersDocumentRepository implements UserRepository {
     if (!email) return null;
 
     const userObject = await this.usersModel.findOne({ email });
-    return userObject ? UserMapper.toDomain(userObject) : null;
-  }
-
-  async findBySocialIdAndProvider({
-    socialId,
-    provider,
-  }: {
-    socialId: User['socialId'];
-    provider: User['provider'];
-  }): Promise<NullableType<User>> {
-    if (!socialId || !provider) return null;
-
-    const userObject = await this.usersModel.findOne({
-      socialId,
-      provider,
-    });
-
     return userObject ? UserMapper.toDomain(userObject) : null;
   }
 
