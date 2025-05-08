@@ -20,6 +20,7 @@ import { MailService } from '../mail/mail.service';
 import { RoleEnum } from '../roles/roles.enum';
 import { StatusEnum } from '../statuses/statuses.enum';
 import { User } from '../users/domain/user';
+import { UserMapper } from 'src/users/infrastructure/persistence/document/mappers/user.mapper';
 
 @Injectable()
 export class AuthService {
@@ -80,7 +81,6 @@ export class AuthService {
   async register(dto: AuthRegisterLoginDto): Promise<void> {
     const user = await this.usersService.create({
       ...dto,
-      email: dto.email,
       role: RoleEnum.user,
       status: StatusEnum.inactive,
     });
@@ -131,7 +131,7 @@ export class AuthService {
 
     user.status = StatusEnum.active;
 
-    await this.usersService.update(user.id, user);
+    await this.usersService.update(user.id, UserMapper.toPersistence(user));
   }
 
   async confirmNewEmail(hash: string): Promise<void> {
@@ -171,7 +171,7 @@ export class AuthService {
     user.email = newEmail;
     user.status = StatusEnum.active;
 
-    await this.usersService.update(user.id, user);
+    await this.usersService.update(user.id, UserMapper.toPersistence(user));
   }
 
   async forgotPassword(email: string): Promise<void> {
@@ -248,7 +248,7 @@ export class AuthService {
 
     user.password = password;
 
-    await this.usersService.update(user.id, user);
+    await this.usersService.update(user.id, UserMapper.toPersistence(user));
   }
 
   async me(userJwtPayload: JwtPayloadType): Promise<NullableType<User>> {

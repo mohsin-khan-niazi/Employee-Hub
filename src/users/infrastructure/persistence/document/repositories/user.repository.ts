@@ -13,7 +13,7 @@ import { IPaginationOptions } from '../../../../../utils/types/pagination-option
 @Injectable()
 export class UsersDocumentRepository implements UserRepository {
   constructor(
-    @InjectModel(UserSchemaClass.name)
+    @InjectModel('User')
     private readonly usersModel: Model<UserSchemaClass>,
   ) {}
 

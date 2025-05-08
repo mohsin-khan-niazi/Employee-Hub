@@ -25,10 +25,7 @@ import { NullableType } from '../utils/types/nullable.type';
 import { User } from '../users/domain/user';
 
 @ApiTags('Auth')
-@Controller({
-  path: 'auth',
-  version: '1',
-})
+@Controller('auth')
 export class AuthController {
   constructor(private readonly service: AuthService) {}
 

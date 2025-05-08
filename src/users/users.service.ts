@@ -50,9 +50,9 @@ export class UsersService {
 
     let photo: FileType | null | undefined = undefined;
 
-    if (createUserDto.photo?.id) {
+    if (createUserDto.personalInformation?.photo?.id) {
       const fileObject = await this.filesService.findById(
-        createUserDto.photo.id,
+        createUserDto.personalInformation?.photo?.id,
       );
       if (!fileObject) {
         throw new UnprocessableEntityException({
@@ -63,7 +63,7 @@ export class UsersService {
         });
       }
       photo = fileObject;
-    } else if (createUserDto.photo === null) {
+    } else if (createUserDto.personalInformation?.photo === null) {
       photo = null;
     }
 
@@ -104,11 +104,13 @@ export class UsersService {
     }
 
     return this.usersRepository.create({
-      firstName: createUserDto.firstName,
-      lastName: createUserDto.lastName,
+      personalInformation: {
+        firstName: createUserDto.personalInformation?.firstName,
+        lastName: createUserDto.personalInformation?.lastName,
+        photo: photo,
+      },
       email: email,
       password: password,
-      photo: photo,
       role: role,
       status: status,
     });
@@ -180,9 +182,9 @@ export class UsersService {
 
     let photo: FileType | null | undefined = undefined;
 
-    if (updateUserDto.photo?.id) {
+    if (updateUserDto.personalInformation?.photo?.id) {
       const fileObject = await this.filesService.findById(
-        updateUserDto.photo.id,
+        updateUserDto.personalInformation?.photo?.id,
       );
       if (!fileObject) {
         throw new UnprocessableEntityException({
@@ -193,7 +195,7 @@ export class UsersService {
         });
       }
       photo = fileObject;
-    } else if (updateUserDto.photo === null) {
+    } else if (updateUserDto.personalInformation?.photo === null) {
       photo = null;
     }
 
@@ -234,11 +236,13 @@ export class UsersService {
     }
 
     return this.usersRepository.update(id, {
-      firstName: updateUserDto.firstName,
-      lastName: updateUserDto.lastName,
+      personalInformation: {
+        firstName: updateUserDto.personalInformation?.firstName,
+        lastName: updateUserDto.personalInformation?.lastName,
+        photo,
+      },
       email,
       password,
-      photo,
       role,
       status,
     });
