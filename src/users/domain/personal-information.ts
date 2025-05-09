@@ -4,21 +4,9 @@ import { FileType } from 'src/files/domain/file';
 export class PersonalInformation {
   @ApiProperty({
     type: String,
-    example: 'John',
-  })
-  firstName?: string | null;
-
-  @ApiProperty({
-    type: String,
-    example: 'Doe',
-  })
-  lastName?: string | null;
-
-  @ApiProperty({
-    type: String,
     example: 'John Doe',
   })
-  fullName?: string;
+  fullName?: string | null;
 
   @ApiProperty({
     type: String,
@@ -57,7 +45,7 @@ export class PersonalInformation {
   nationalId?: string | null;
 
   @ApiProperty({
-    type: FileType,
+    type: () => FileType,
   })
   photo?: FileType | null;
 }

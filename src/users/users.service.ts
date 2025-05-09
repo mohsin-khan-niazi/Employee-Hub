@@ -105,9 +105,25 @@ export class UsersService {
 
     return this.usersRepository.create({
       personalInformation: {
-        firstName: createUserDto.personalInformation?.firstName,
-        lastName: createUserDto.personalInformation?.lastName,
+        fullName: createUserDto.personalInformation?.fullName,
+        fatherName: createUserDto.personalInformation?.fatherName,
+        nationality: createUserDto.personalInformation?.nationality,
+        address: createUserDto.personalInformation?.address,
+        birthDate: createUserDto.personalInformation?.birthDate,
+        gender: createUserDto.personalInformation?.gender,
+        phoneNo: createUserDto.personalInformation?.phoneNo,
+        nationalId: createUserDto.personalInformation?.nationalId,
         photo: photo,
+      },
+      employmentInformation: {
+        salary: createUserDto.employmentInformation?.salary,
+        joiningDate: createUserDto.employmentInformation?.joiningDate,
+        designation: createUserDto.employmentInformation?.designation,
+        department: createUserDto.employmentInformation?.department,
+        reportsTo: createUserDto.employmentInformation?.reportsTo,
+        status: createUserDto.employmentInformation?.status,
+        role: createUserDto.employmentInformation?.role,
+        shiftHours: createUserDto.employmentInformation?.shiftHours,
       },
       email: email,
       password: password,
@@ -237,8 +253,14 @@ export class UsersService {
 
     return this.usersRepository.update(id, {
       personalInformation: {
-        firstName: updateUserDto.personalInformation?.firstName,
-        lastName: updateUserDto.personalInformation?.lastName,
+        fullName: updateUserDto.personalInformation?.fullName,
+        fatherName: updateUserDto.personalInformation?.fatherName,
+        nationality: updateUserDto.personalInformation?.nationality,
+        address: updateUserDto.personalInformation?.address,
+        birthDate: updateUserDto.personalInformation?.birthDate,
+        gender: updateUserDto.personalInformation?.gender,
+        phoneNo: updateUserDto.personalInformation?.phoneNo,
+        nationalId: updateUserDto.personalInformation?.nationalId,
         photo,
       },
       email,

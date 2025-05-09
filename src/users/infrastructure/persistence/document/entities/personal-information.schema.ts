@@ -6,32 +6,17 @@ import { EntityDocumentHelper } from '../../../../../utils/document-entity-helpe
 
 export type PersonalInformationDocument = HydratedDocument<PersonalInformation>;
 
-@Schema({
-  _id: false,
-  toJSON: {
-    virtuals: true,
-    getters: true,
-  },
-})
+@Schema({ _id: false })
 export class PersonalInformation extends EntityDocumentHelper {
   @Prop({
     type: String,
   })
-  first_name?: string | null;
+  fullName?: string | null;
 
   @Prop({
     type: String,
   })
-  last_name?: string | null;
-
-  get full_name(): string {
-    return `${this.first_name} ${this.last_name}`;
-  }
-
-  @Prop({
-    type: String,
-  })
-  father_name?: string | null;
+  fatherName?: string | null;
 
   @Prop({
     type: String,
@@ -46,7 +31,7 @@ export class PersonalInformation extends EntityDocumentHelper {
   @Prop({
     type: String,
   })
-  birth_date?: string | null;
+  birthDate?: string | null;
 
   @Prop({
     type: String,
@@ -56,18 +41,17 @@ export class PersonalInformation extends EntityDocumentHelper {
   @Prop({
     type: String,
   })
-  phone_no?: string | null;
+  phoneNo?: string | null;
 
   @Prop({
     type: String,
   })
-  national_id?: string | null;
+  nationalId?: string | null;
 
   @Prop({
     type: FileSchemaClass,
   })
   photo?: FileSchemaClass | null;
 }
-
 export const PersonalInformationSchema =
   SchemaFactory.createForClass(PersonalInformation);

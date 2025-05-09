@@ -5,16 +5,14 @@ import { FileMapper } from '../../../../../files/infrastructure/persistence/docu
 export class PersonalInformationMapper {
   static toDomain(raw: SchemaPersonalInformation): DomainPersonalInformation {
     const domainEntity = new DomainPersonalInformation();
-    domainEntity.firstName = raw.first_name;
-    domainEntity.lastName = raw.last_name;
-    domainEntity.fullName = raw.full_name;
-    domainEntity.fatherName = raw.father_name;
+    domainEntity.fullName = raw.fullName;
+    domainEntity.fatherName = raw.fatherName;
     domainEntity.nationality = raw.nationality;
     domainEntity.address = raw.address;
-    domainEntity.birthDate = raw.birth_date;
+    domainEntity.birthDate = raw.birthDate;
     domainEntity.gender = raw.gender;
-    domainEntity.phoneNo = raw.phone_no;
-    domainEntity.nationalId = raw.national_id;
+    domainEntity.phoneNo = raw.phoneNo;
+    domainEntity.nationalId = raw.nationalId;
 
     if (raw.photo) {
       domainEntity.photo = FileMapper.toDomain(raw.photo);
@@ -29,15 +27,14 @@ export class PersonalInformationMapper {
     domainEntity: DomainPersonalInformation,
   ): SchemaPersonalInformation {
     const persistenceSchema = new SchemaPersonalInformation();
-    persistenceSchema.first_name = domainEntity.firstName;
-    persistenceSchema.last_name = domainEntity.lastName;
-    persistenceSchema.father_name = domainEntity.fatherName;
+    persistenceSchema.fullName = domainEntity.fullName;
+    persistenceSchema.fatherName = domainEntity.fatherName;
     persistenceSchema.nationality = domainEntity.nationality;
     persistenceSchema.address = domainEntity.address;
-    persistenceSchema.birth_date = domainEntity.birthDate;
+    persistenceSchema.birthDate = domainEntity.birthDate;
     persistenceSchema.gender = domainEntity.gender;
-    persistenceSchema.phone_no = domainEntity.phoneNo;
-    persistenceSchema.national_id = domainEntity.nationalId;
+    persistenceSchema.phoneNo = domainEntity.phoneNo;
+    persistenceSchema.nationalId = domainEntity.nationalId;
 
     if (domainEntity.photo) {
       persistenceSchema.photo = FileMapper.toPersistence(domainEntity.photo);

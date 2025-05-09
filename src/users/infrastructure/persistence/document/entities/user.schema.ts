@@ -28,7 +28,7 @@ export class UserSchemaClass extends EntityDocumentHelper {
   @Prop({
     type: PersonalInformation,
   })
-  personal_information: PersonalInformation;
+  personalInformation: PersonalInformation;
 
   @Prop({
     type: String,

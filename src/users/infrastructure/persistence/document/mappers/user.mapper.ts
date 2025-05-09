@@ -11,9 +11,9 @@ export class UserMapper {
     domainEntity.role = raw.role;
     domainEntity.status = raw.status;
 
-    if (raw.personal_information) {
+    if (raw.personalInformation) {
       domainEntity.personalInformation = PersonalInformationMapper.toDomain(
-        raw.personal_information,
+        raw.personalInformation,
       );
     }
 
@@ -36,7 +36,7 @@ export class UserMapper {
     persistenceSchema.status = domainEntity.status;
 
     if (domainEntity.personalInformation) {
-      persistenceSchema.personal_information =
+      persistenceSchema.personalInformation =
         PersonalInformationMapper.toPersistence(
           domainEntity.personalInformation,
         );

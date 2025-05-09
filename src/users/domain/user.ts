@@ -1,6 +1,7 @@
 import { Exclude, Expose } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
 import { PersonalInformation } from './personal-information';
+import { EmploymentInformation } from './employment.information';
 
 export class User {
   @ApiProperty({
@@ -22,6 +23,11 @@ export class User {
     type: PersonalInformation,
   })
   personalInformation: PersonalInformation;
+
+  @ApiProperty({
+    type: EmploymentInformation,
+  })
+  employmentInformation: EmploymentInformation;
 
   @ApiProperty({
     type: String,
