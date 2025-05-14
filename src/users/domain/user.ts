@@ -3,7 +3,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { PersonalInformation } from './personal-information';
 import { EmploymentInformation } from './employment.information';
 import { Leaves } from './leaves';
-import { BankingInformation } from '../infrastructure/persistence/document/entities/banking-information.schema';
+import { BankingInformation } from './banking-information';
 
 export class User {
   @ApiProperty({

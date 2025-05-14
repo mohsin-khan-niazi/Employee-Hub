@@ -47,8 +47,6 @@ export class UserMapper {
 
     persistenceSchema.email = domainEntity.email;
     persistenceSchema.password = domainEntity.password;
-    persistenceSchema.role = domainEntity.role;
-    persistenceSchema.status = domainEntity.status;
 
     if (domainEntity.personalInformation) {
       persistenceSchema.personalInformation =

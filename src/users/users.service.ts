@@ -24,7 +24,6 @@ export class UsersService {
   ) {}
 
   async create(createUserDto: CreateUserDto): Promise<User> {
-    console.log('createUserDto', createUserDto);
     let password: string | undefined = undefined;
 
     if (createUserDto.password) {
