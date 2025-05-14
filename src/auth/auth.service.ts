@@ -67,7 +67,7 @@ export class AuthService {
 
     const { token, tokenExpires } = await this.signJWT({
       id: user.id,
-      role: user.role,
+      role: user.employmentInformation.role,
     });
 
     return {
@@ -80,8 +80,10 @@ export class AuthService {
   async register(dto: AuthRegisterLoginDto): Promise<void> {
     const user = await this.usersService.create({
       ...dto,
-      role: RoleEnum.user,
-      status: StatusEnum.inactive,
+      employmentInformation: {
+        role: RoleEnum.user,
+        status: StatusEnum.inactive,
+      },
     });
 
     const { token } = await this.signJWT({

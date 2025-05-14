@@ -46,8 +46,8 @@ export class EmploymentInformation {
     }),
   )
   shiftHours?: {
-    start: string | null;
-    end: string | null;
+    start?: string | null;
+    end?: string | null;
   };
 }
 

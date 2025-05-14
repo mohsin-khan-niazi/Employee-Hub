@@ -2,6 +2,8 @@ import { Exclude, Expose } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
 import { PersonalInformation } from './personal-information';
 import { EmploymentInformation } from './employment.information';
+import { Leaves } from './leaves';
+import { BankingInformation } from '../infrastructure/persistence/document/entities/banking-information.schema';
 
 export class User {
   @ApiProperty({
@@ -28,6 +30,16 @@ export class User {
     type: EmploymentInformation,
   })
   employmentInformation: EmploymentInformation;
+
+  @ApiProperty({
+    type: Leaves,
+  })
+  leavesCounts: Leaves;
+
+  @ApiProperty({
+    type: BankingInformation,
+  })
+  bankingInformation?: BankingInformation;
 
   @ApiProperty({
     type: String,

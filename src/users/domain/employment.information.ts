@@ -1,4 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { Types } from 'mongoose';
 
 export class EmploymentInformation {
   @ApiProperty({
@@ -34,23 +35,23 @@ export class EmploymentInformation {
 
   @ApiProperty({
     type: String,
-    example: 'John Doe',
+    example: '60d5f484f1c2b8a3d4e4e4e4',
   })
-  reportsTo?: string | null;
+  reportsTo?: Types.ObjectId | null;
 
   @ApiProperty({
     type: String,
     enum: ['active', 'inactive', 'on_leave', 'terminated'],
     example: 'active',
   })
-  status?: 'active' | 'inactive' | 'on_leave' | 'terminated' | null;
+  status?: string | null;
 
   @ApiProperty({
     type: String,
     enum: ['admin', 'user'],
     example: 'user',
   })
-  role?: 'admin' | 'user' | null;
+  role?: string | null;
 
   @ApiProperty({
     type: Object,
@@ -60,7 +61,7 @@ export class EmploymentInformation {
     },
   })
   shiftHours?: {
-    start?: string;
-    end?: string;
+    start?: string | null;
+    end?: string | null;
   };
 }

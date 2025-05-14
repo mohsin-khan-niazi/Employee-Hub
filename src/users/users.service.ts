@@ -24,6 +24,7 @@ export class UsersService {
   ) {}
 
   async create(createUserDto: CreateUserDto): Promise<User> {
+    console.log('createUserDto', createUserDto);
     let password: string | undefined = undefined;
 
     if (createUserDto.password) {
@@ -69,10 +70,10 @@ export class UsersService {
 
     let role: string | undefined = undefined;
 
-    if (createUserDto.role) {
+    if (createUserDto.employmentInformation?.role) {
       const roleObject = Object.values(RoleEnum)
         .map(String)
-        .includes(String(createUserDto.role));
+        .includes(String(createUserDto.employmentInformation?.role));
       if (!roleObject) {
         throw new UnprocessableEntityException({
           status: HttpStatus.UNPROCESSABLE_ENTITY,
@@ -82,15 +83,15 @@ export class UsersService {
         });
       }
 
-      role = createUserDto.role;
+      role = createUserDto.employmentInformation?.role;
     }
 
     let status: string | undefined = undefined;
 
-    if (createUserDto.status) {
+    if (createUserDto.employmentInformation?.status) {
       const statusObject = Object.values(StatusEnum)
         .map(String)
-        .includes(String(createUserDto.status));
+        .includes(String(createUserDto.employmentInformation?.status));
       if (!statusObject) {
         throw new UnprocessableEntityException({
           status: HttpStatus.UNPROCESSABLE_ENTITY,
@@ -100,7 +101,7 @@ export class UsersService {
         });
       }
 
-      status = createUserDto.status;
+      status = createUserDto.employmentInformation?.status;
     }
 
     return this.usersRepository.create({
@@ -121,14 +122,25 @@ export class UsersService {
         designation: createUserDto.employmentInformation?.designation,
         department: createUserDto.employmentInformation?.department,
         reportsTo: createUserDto.employmentInformation?.reportsTo,
-        status: createUserDto.employmentInformation?.status,
-        role: createUserDto.employmentInformation?.role,
+        status: status,
+        role: role,
         shiftHours: createUserDto.employmentInformation?.shiftHours,
+      },
+      leavesCounts: {
+        casualLeaves: createUserDto.leavesCounts?.casualLeaves,
+        sickLeaves: createUserDto.leavesCounts?.sickLeaves,
+        emergencyLeaves: createUserDto.leavesCounts?.emergencyLeaves,
+        workFromHome: createUserDto.leavesCounts?.workFromHome,
+        annualLeaves: createUserDto.leavesCounts?.annualLeaves,
+        maternityLeaves: createUserDto.leavesCounts?.maternityLeaves,
+      },
+      bankingInformation: {
+        accountTitle: createUserDto.bankingInformation?.accountTitle,
+        accountNumber: createUserDto.bankingInformation?.accountNumber,
+        bankName: createUserDto.bankingInformation?.bankName,
       },
       email: email,
       password: password,
-      role: role,
-      status: status,
     });
   }
 
@@ -217,10 +229,10 @@ export class UsersService {
 
     let role: string | undefined = undefined;
 
-    if (updateUserDto.role) {
+    if (updateUserDto.employmentInformation?.role) {
       const roleObject = Object.values(RoleEnum)
         .map(String)
-        .includes(String(updateUserDto.role));
+        .includes(String(updateUserDto.employmentInformation?.role));
       if (!roleObject) {
         throw new UnprocessableEntityException({
           status: HttpStatus.UNPROCESSABLE_ENTITY,
@@ -230,15 +242,15 @@ export class UsersService {
         });
       }
 
-      role = updateUserDto.role;
+      role = updateUserDto.employmentInformation?.role;
     }
 
     let status: string | undefined = undefined;
 
-    if (updateUserDto.status) {
+    if (updateUserDto.employmentInformation?.status) {
       const statusObject = Object.values(StatusEnum)
         .map(String)
-        .includes(String(updateUserDto.status));
+        .includes(String(updateUserDto.employmentInformation?.status));
       if (!statusObject) {
         throw new UnprocessableEntityException({
           status: HttpStatus.UNPROCESSABLE_ENTITY,
@@ -248,7 +260,7 @@ export class UsersService {
         });
       }
 
-      status = updateUserDto.status;
+      status = updateUserDto.employmentInformation?.status;
     }
 
     return this.usersRepository.update(id, {
@@ -263,10 +275,31 @@ export class UsersService {
         nationalId: updateUserDto.personalInformation?.nationalId,
         photo,
       },
+      employmentInformation: {
+        salary: updateUserDto.employmentInformation?.salary,
+        joiningDate: updateUserDto.employmentInformation?.joiningDate,
+        designation: updateUserDto.employmentInformation?.designation,
+        department: updateUserDto.employmentInformation?.department,
+        reportsTo: updateUserDto.employmentInformation?.reportsTo,
+        status: status,
+        role: role,
+        shiftHours: updateUserDto.employmentInformation?.shiftHours,
+      },
+      leavesCounts: {
+        casualLeaves: updateUserDto.leavesCounts?.casualLeaves,
+        sickLeaves: updateUserDto.leavesCounts?.sickLeaves,
+        emergencyLeaves: updateUserDto.leavesCounts?.emergencyLeaves,
+        workFromHome: updateUserDto.leavesCounts?.workFromHome,
+        annualLeaves: updateUserDto.leavesCounts?.annualLeaves,
+        maternityLeaves: updateUserDto.leavesCounts?.maternityLeaves,
+      },
+      bankingInformation: {
+        accountTitle: updateUserDto.bankingInformation?.accountTitle,
+        accountNumber: updateUserDto.bankingInformation?.accountNumber,
+        bankName: updateUserDto.bankingInformation?.bankName,
+      },
       email,
       password,
-      role,
-      status,
     });
   }
 

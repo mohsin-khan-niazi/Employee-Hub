@@ -3,6 +3,9 @@ import { now, HydratedDocument } from 'mongoose';
 
 import { EntityDocumentHelper } from '../../../../../utils/document-entity-helper';
 import { PersonalInformation } from './personal-information.schema';
+import { EmploymentInformation } from 'src/users/domain/employment.information';
+import { Leaves } from './leaves.schema';
+import { BankingInformation } from './banking-information.schema';
 
 export type UserSchemaDocument = HydratedDocument<UserSchemaClass>;
 
@@ -29,6 +32,21 @@ export class UserSchemaClass extends EntityDocumentHelper {
     type: PersonalInformation,
   })
   personalInformation: PersonalInformation;
+
+  @Prop({
+    type: EmploymentInformation,
+  })
+  employmentInformation?: EmploymentInformation;
+
+  @Prop({
+    type: Leaves,
+  })
+  leavesCount?: Leaves;
+
+  @Prop({
+    type: BankingInformation,
+  })
+  bankingInformation?: BankingInformation;
 
   @Prop({
     type: String,

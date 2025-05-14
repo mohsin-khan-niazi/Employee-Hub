@@ -2,12 +2,11 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument } from 'mongoose';
 
 import { FileSchemaClass } from '../../../../../files/infrastructure/persistence/document/entities/file.schema';
-import { EntityDocumentHelper } from '../../../../../utils/document-entity-helper';
 
 export type PersonalInformationDocument = HydratedDocument<PersonalInformation>;
 
 @Schema({ _id: false })
-export class PersonalInformation extends EntityDocumentHelper {
+export class PersonalInformation {
   @Prop({
     type: String,
   })

@@ -3,6 +3,7 @@ import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { IsEmail, IsNotEmpty, IsOptional, MinLength } from 'class-validator';
 import { FileDto } from '../../files/dto/file.dto';
 import { lowerCaseTransformer } from '../../utils/transformers/lower-case.transformer';
+import { Types } from 'mongoose';
 
 export class AddEmploymentInformationDto {
   @ApiProperty({
@@ -37,24 +38,24 @@ export class AddEmploymentInformationDto {
   department?: string | null;
 
   @ApiProperty({
-    type: String,
-    example: 'John Doe',
+    type: Types.ObjectId,
+    example: '60d5f484f1c2b8a3d4e4e4e4',
   })
-  reportsTo?: string | null;
+  reportsTo?: Types.ObjectId | null;
 
   @ApiProperty({
     type: String,
     enum: ['active', 'inactive', 'on_leave', 'terminated'],
     example: 'active',
   })
-  status?: 'active' | 'inactive' | 'on_leave' | 'terminated' | null;
+  status?: string | null;
 
   @ApiProperty({
     type: String,
     enum: ['admin', 'user'],
     example: 'user',
   })
-  role?: 'admin' | 'user' | null;
+  role?: string | null;
 
   @ApiProperty({
     type: Object,
@@ -64,8 +65,8 @@ export class AddEmploymentInformationDto {
     },
   })
   shiftHours?: {
-    start?: string;
-    end?: string;
+    start?: string | null;
+    end?: string | null;
   };
 }
 export class AddPersonalInformationDto {
@@ -105,6 +106,71 @@ export class AddPersonalInformationDto {
   @IsOptional()
   photo?: FileDto | null;
 }
+
+export class AddLeavesCountsDto {
+  @ApiPropertyOptional({
+    type: Number,
+    example: 12,
+    description: 'Number of casual leaves available',
+  })
+  @IsOptional()
+  casualLeaves?: number | null;
+
+  @ApiPropertyOptional({
+    type: Number,
+    example: 12,
+    description: 'Number of sick leaves available',
+  })
+  @IsOptional()
+  sickLeaves?: number | null;
+
+  @ApiPropertyOptional({
+    type: Number,
+    example: 8,
+    description: 'Number of emergency leaves available',
+  })
+  @IsOptional()
+  emergencyLeaves?: number | null;
+
+  @ApiPropertyOptional({
+    type: Number,
+    example: 22,
+    description: 'Number of work-from-home days available',
+  })
+  @IsOptional()
+  workFromHome?: number | null;
+
+  @ApiPropertyOptional({
+    type: Number,
+    example: 12,
+    description: 'Number of annual leaves available',
+  })
+  @IsOptional()
+  annualLeaves?: number | null;
+
+  @ApiPropertyOptional({
+    type: Number,
+    example: 60,
+    description: 'Number of maternity leaves available',
+  })
+  @IsOptional()
+  maternityLeaves?: number | null;
+}
+
+export class AddBankingInformationDto {
+  @ApiProperty({ example: 'HBL', type: String })
+  @IsOptional()
+  bankName?: string | null;
+
+  @ApiProperty({ example: 'Jane Doe', type: String })
+  @IsOptional()
+  accountTitle?: string | null;
+
+  @ApiProperty({ example: 'PK42HABB1234567890123', type: String })
+  @IsOptional()
+  accountNumber?: string | null;
+}
+
 export class CreateUserDto {
   @ApiProperty({ example: 'test1@example.com', type: String })
   @Transform(lowerCaseTransformer)
@@ -116,13 +182,13 @@ export class CreateUserDto {
   @MinLength(6)
   password?: string;
 
-  @ApiPropertyOptional({ type: String })
-  @IsOptional()
-  role?: string | null;
+  // @ApiPropertyOptional({ type: String })
+  // @IsOptional()
+  // role?: string | null;
 
-  @ApiPropertyOptional({ type: String })
-  @IsOptional()
-  status?: string | null;
+  // @ApiPropertyOptional({ type: String })
+  // @IsOptional()
+  // status?: string | null;
 
   @ApiPropertyOptional({ type: AddPersonalInformationDto })
   @IsOptional()
@@ -131,4 +197,12 @@ export class CreateUserDto {
   @ApiPropertyOptional({ type: AddEmploymentInformationDto })
   @IsOptional()
   employmentInformation?: AddEmploymentInformationDto | null;
+
+  @ApiPropertyOptional({ type: AddLeavesCountsDto })
+  @IsOptional()
+  leavesCounts?: AddLeavesCountsDto | null;
+
+  @ApiPropertyOptional({ type: AddBankingInformationDto })
+  @IsOptional()
+  bankingInformation?: AddBankingInformationDto | null;
 }
