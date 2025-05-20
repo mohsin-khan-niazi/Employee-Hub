@@ -37,8 +37,8 @@ async function bootstrap() {
   );
 
   const options = new DocumentBuilder()
-    .setTitle('API')
-    .setDescription('API docs')
+    .setTitle('Haazri API')
+    .setDescription('Haazri API docs for Aleh Attendance System')
     .setVersion('1.0')
     .addBearerAuth()
     .build();

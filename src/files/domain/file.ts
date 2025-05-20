@@ -30,8 +30,10 @@ export class FileType {
           (fileConfig() as FileConfig).driver,
         )
       ) {
+        const region = (fileConfig() as FileConfig).awsS3Region ?? '';
         const s3 = new S3Client({
-          region: (fileConfig() as FileConfig).awsS3Region ?? '',
+          region: region,
+          endpoint: `https://${region}.digitaloceanspaces.com`,
           credentials: {
             accessKeyId: (fileConfig() as FileConfig).accessKeyId ?? '',
             secretAccessKey: (fileConfig() as FileConfig).secretAccessKey ?? '',

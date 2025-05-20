@@ -26,6 +26,7 @@ const infrastructurePersistenceModule = DocumentFilePersistenceModule;
       useFactory: (configService: ConfigService<AllConfigType>) => {
         const s3 = new S3Client({
           region: configService.get('file.awsS3Region', { infer: true }),
+          endpoint: `https://${configService.get('file.awsS3Region', { infer: true })}.digitaloceanspaces.com`,
           credentials: {
             accessKeyId: configService.getOrThrow('file.accessKeyId', {
               infer: true,
