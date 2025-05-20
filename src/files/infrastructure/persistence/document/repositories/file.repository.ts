@@ -12,7 +12,7 @@ import { NullableType } from '../../../../../utils/types/nullable.type';
 @Injectable()
 export class FileDocumentRepository implements FileRepository {
   constructor(
-    @InjectModel(FileSchemaClass.name)
+    @InjectModel('File')
     private fileModel: Model<FileSchemaClass>,
   ) {}
 
