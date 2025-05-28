@@ -93,7 +93,6 @@ export class MailService {
       templateVariables,
     );
 
-    console.log(html);
     return await this.send({
       to: mailData.to,
       from: 'hr@aleh.tech',
