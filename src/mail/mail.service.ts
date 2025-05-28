@@ -3,7 +3,9 @@ import { ConfigService } from '@nestjs/config';
 import { AllConfigType } from '../config/config.type';
 import { MailData } from './interfaces/mail-data.interface';
 import SendGrid from '@sendgrid/mail';
-
+import Handlebars from 'handlebars';
+import path from 'path';
+import fs from 'fs';
 @Injectable()
 export class MailService {
   constructor(private readonly configService: ConfigService<AllConfigType>) {
@@ -17,18 +19,48 @@ export class MailService {
     return transport;
   }
 
+  private compileTemplate(
+    templatePath: string,
+    variables: Record<string, any>,
+  ): string {
+    const html = fs.readFileSync(templatePath, 'utf-8');
+    const template = Handlebars.compile(html, { strict: true });
+    return template(variables);
+  }
+
+  private getTemplatePath(templateName: string): string {
+    return path.join(
+      this.configService.getOrThrow('app.workingDirectory', { infer: true }),
+      'src',
+      'mail',
+      'mail-templates',
+      `${templateName}.hbs`,
+    );
+  }
+
   async sendCredentials(
     mailData: MailData<{ name: string; password: string }>,
   ) {
+    const appName = this.configService.get('app.name', { infer: true });
+    const templateVariables = {
+      title: `Welcome to ${appName}`,
+      appName,
+      name: mailData.data.name,
+      password: mailData.data.password,
+      email: mailData.to,
+      year: new Date().getFullYear(),
+    };
+
+    const html = this.compileTemplate(
+      this.getTemplatePath('activation'),
+      templateVariables,
+    );
+
     return await this.send({
       to: mailData.to,
       from: 'hr@aleh.tech',
-      templateId: 'd-0c493dc94b9e4c7b8f874cb0424bcc9f',
-      dynamicTemplateData: {
-        password: mailData.data.password,
-        name: mailData.data.name,
-        email: mailData.to,
-      },
+      subject: `Welcome to ${appName}`,
+      html,
     });
   }
 
@@ -36,20 +68,37 @@ export class MailService {
     mailData: MailData<{ hash: string; tokenExpires: number }>,
   ) {
     const url = new URL(
-      this.configService.getOrThrow('app.frontendDomain', {
-        infer: true,
-      }) + '/password-change',
+      this.configService.getOrThrow('app.frontendDomain', { infer: true }) +
+        '/password-change',
     );
     url.searchParams.set('hash', mailData.data.hash);
     url.searchParams.set('expires', mailData.data.tokenExpires.toString());
 
+    const tokenExpires = this.configService.getOrThrow('auth.forgotExpires', {
+      infer: true,
+    });
+
+    const tokenExpiresIn = tokenExpires.replace('m', ' minutes');
+
+    const templateVariables = {
+      title: 'Reset Your Password',
+      resetLink: url.toString(),
+      appName: this.configService.get('app.name', { infer: true }),
+      tokenExpires: tokenExpiresIn,
+      year: new Date().getFullYear(),
+    };
+
+    const html = await this.compileTemplate(
+      this.getTemplatePath('reset-password'),
+      templateVariables,
+    );
+
+    console.log(html);
     return await this.send({
       to: mailData.to,
       from: 'hr@aleh.tech',
-      templateId: 'd-9a3d496f8c384078be0753217384776c',
-      dynamicTemplateData: {
-        url,
-      },
+      subject: 'Reset Your Password',
+      html,
     });
   }
 

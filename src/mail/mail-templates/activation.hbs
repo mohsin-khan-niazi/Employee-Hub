@@ -2,119 +2,148 @@
 <html>
   <head>
     <title>{{title}}</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link
       href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap"
       rel="stylesheet"
     />
-    <style>
-      body {
-        margin: 0;
-        background-color: #fff;
-        font-family: "Outfit", sans-serif;
-      }
-
-      .content-wrapper {
-        border: 1px solid #d3d3d3;
-        border-radius: 12px;
-        width: 95%;
-        max-width: 600px;
-        margin: 30px auto;
-        padding: 20px;
-        box-sizing: border-box;
-      }
-
-      .header-wrapper {
-        display: flex;
-        justify-content: center;
-      }
-
-      .header-box {
-        background: #97c15c;
-        padding: 20px;
-        border-radius: 10px;
-        text-align: center;
-        display: flex;
-        justify-content: center;
-        width: 560px;
-      }
-
-      .header-box h1 {
-        font-size: 48px;
-        margin: 0;
-        color: #fff;
-      }
-
-      .main-box {
-        border: 2px solid black;
-        border-radius: 10px;
-        width: 90%;
-        max-width: 450px;
-        margin: 20px auto;
-        padding: 20px;
-      }
-
-      .main-box p {
-        font-size: 12px;
-        color: #333;
-      }
-
-      .credentials-box {
-        background-color: #eeeeee;
-        padding: 15px;
-        border-radius: 5px;
-        margin: 15px 0;
-        font-size: 12px;
-      }
-
-      .credentials-box span {
-        font-weight: bold;
-      }
-
-      .footer {
-        text-align: center;
-        color: #666;
-        font-size: 12px;
-        margin-top: 20px;
-        padding-bottom: 10px;
-      }
-
-      .note {
-        color: #555;
-      }
-    </style>
   </head>
+  <body
+    style="margin:0; background-color:#fff; font-family: 'Outfit', sans-serif;"
+  >
+    <table
+      width="100%"
+      cellpadding="0"
+      cellspacing="0"
+      border="0"
+      style="background-color:#fff; padding:30px 0;"
+    >
+      <tr>
+        <td align="center">
+          <table
+            width="95%"
+            cellpadding="0"
+            cellspacing="0"
+            border="0"
+            style="
+              max-width: 600px;
+              border: 1px solid #d3d3d3;
+              border-radius: 12px;
+              padding: 20px;
+              box-sizing: border-box;
+            "
+          >
+            <!-- Header -->
+            <tr>
+              <td align="center" style="padding-bottom: 20px;">
+                <table
+                  width="560"
+                  cellpadding="0"
+                  cellspacing="0"
+                  border="0"
+                  style="
+                    background-color: #97c15c;
+                    border-radius: 10px;
+                    text-align: center;
+                    padding: 20px;
+                  "
+                >
+                  <tr>
+                    <td>
+                      <h1
+                        style="
+                          font-size: 48px;
+                          margin: 0;
+                          color: #fff;
+                          font-family: 'Outfit', sans-serif;
+                        "
+                      >
+                        {{appName}}
+                      </h1>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
 
-  <body>
-    <div class="content-wrapper">
-      <!-- Header -->
-      <div class="header-wrapper">
-        <div class="header-box">
-          <h1>{{appName}}</h1>
-        </div>
-      </div>
+            <!-- Main Content -->
+            <tr>
+              <td>
+                <table
+                  width="90%"
+                  cellpadding="0"
+                  cellspacing="0"
+                  border="0"
+                  style="
+                    max-width: 450px;
+                    border: 2px solid black;
+                    border-radius: 10px;
+                    padding: 20px;
+                    font-family: 'Outfit', sans-serif;
+                    font-size: 12px;
+                    color: #333333;
+                  "
+                >
+                  <tr>
+                    <td style="padding-bottom: 10px;">Hello {{fullName}},</td>
+                  </tr>
+                  <tr>
+                    <td style="padding-bottom: 15px;">
+                      We are excited to have you on board as a member at Aleh.
+                      Below are your system credentials that you will use to
+                      track your leave and work from home requests. You can
+                      also download your salary slips from the app:
+                    </td>
+                  </tr>
+                  <tr>
+                    <td
+                      style="
+                        background-color: #eeeeee;
+                        padding: 15px;
+                        border-radius: 5px;
+                        margin: 15px 0;
+                        font-size: 12px;
+                        color: #333333;
+                      "
+                    >
+                      <p style="margin: 0 0 8px 0;">
+                        <strong>Email:</strong> {{email}}
+                      </p>
+                      <p style="margin: 0;">
+                        <strong>Password:</strong> {{password}}
+                      </p>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style="color: #555555; padding-top: 10px;">
+                      If you have any question, feel free to reach out to your
+                      manager.
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
 
-      <!-- Main Content -->
-      <div class="main-box">
-        <p>Hello {{fullName}},</p>
-        <p>
-          We are excited to have you on board as a member at Aleh. Below are
-          your system credentials that you will use to track your leave and work
-          from home requests. You can also download your salary slips from the
-          app:
-        </p>
-
-        <div class="credentials-box">
-          <p><span>Email:</span> {{email}}</p>
-          <p><span>Password:</span> {{password}}</p>
-        </div>
-
-        <p class="note">
-          If you have any question, feel free to reach out to your manager.
-        </p>
-      </div>
-
-      <!-- Footer -->
-      <div class="footer">{{year}}, Aleh. All rights reserved.</div>
-    </div>
+            <!-- Footer -->
+            <tr>
+              <td
+                align="center"
+                style="
+                  font-size: 12px;
+                  color: #666666;
+                  margin-top: 20px;
+                  padding-bottom: 10px;
+                  padding-top: 20px;
+                  font-family: 'Outfit', sans-serif;
+                "
+              >
+                {{year}}, Aleh. All rights reserved.
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
   </body>
 </html>
