@@ -32,7 +32,7 @@ export class EmploymentInformation {
 
   @Prop({
     type: String,
-    enum: ['active', 'inactive', 'on_leave', 'terminated'],
+    enum: ['active', 'inactive', 'permanent', 'on-contract', 'terminated'],
   })
   status?: string | null;
 

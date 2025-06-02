@@ -1,7 +1,6 @@
 import {
   HttpStatus,
   Injectable,
-  NotFoundException,
   UnprocessableEntityException,
 } from '@nestjs/common';
 import ms from 'ms';
@@ -81,8 +80,8 @@ export class AuthService {
     await this.usersService.create({
       ...dto,
       employmentInformation: {
-        role: RoleEnum.user,
-        status: StatusEnum.inactive,
+        role: RoleEnum.USER,
+        status: StatusEnum.INACTIVE,
       },
     });
 
@@ -99,81 +98,81 @@ export class AuthService {
     // });
   }
 
-  async confirmEmail(hash: string): Promise<void> {
-    let userId: User['id'];
+  // async confirmEmail(hash: string): Promise<void> {
+  //   let userId: User['id'];
 
-    try {
-      const jwtData = await this.jwtService.verifyAsync<{
-        confirmEmailUserId: User['id'];
-      }>(hash, {
-        secret: this.configService.getOrThrow('auth.confirmEmailSecret', {
-          infer: true,
-        }),
-      });
+  //   try {
+  //     const jwtData = await this.jwtService.verifyAsync<{
+  //       confirmEmailUserId: User['id'];
+  //     }>(hash, {
+  //       secret: this.configService.getOrThrow('auth.confirmEmailSecret', {
+  //         infer: true,
+  //       }),
+  //     });
 
-      userId = jwtData.confirmEmailUserId;
-    } catch {
-      throw new UnprocessableEntityException({
-        status: HttpStatus.UNPROCESSABLE_ENTITY,
-        errors: {
-          hash: `invalidHash`,
-        },
-      });
-    }
+  //     userId = jwtData.confirmEmailUserId;
+  //   } catch {
+  //     throw new UnprocessableEntityException({
+  //       status: HttpStatus.UNPROCESSABLE_ENTITY,
+  //       errors: {
+  //         hash: `invalidHash`,
+  //       },
+  //     });
+  //   }
 
-    const user = await this.usersService.findById(userId);
+  //   const user = await this.usersService.findById(userId);
 
-    if (!user || user?.status !== StatusEnum.inactive) {
-      throw new NotFoundException({
-        status: HttpStatus.NOT_FOUND,
-        error: `notFound`,
-      });
-    }
+  //   if (!user || user?.status !== StatusEnum.inactive) {
+  //     throw new NotFoundException({
+  //       status: HttpStatus.NOT_FOUND,
+  //       error: `notFound`,
+  //     });
+  //   }
 
-    user.status = StatusEnum.active;
+  //   user.status = StatusEnum.active;
 
-    await this.usersService.update(user.id, user);
-  }
+  //   await this.usersService.update(user.id, user);
+  // }
 
-  async confirmNewEmail(hash: string): Promise<void> {
-    let userId: User['id'];
-    let newEmail: User['email'];
+  // async confirmNewEmail(hash: string): Promise<void> {
+  //   let userId: User['id'];
+  //   let newEmail: User['email'];
 
-    try {
-      const jwtData = await this.jwtService.verifyAsync<{
-        confirmEmailUserId: User['id'];
-        newEmail: User['email'];
-      }>(hash, {
-        secret: this.configService.getOrThrow('auth.confirmEmailSecret', {
-          infer: true,
-        }),
-      });
+  //   try {
+  //     const jwtData = await this.jwtService.verifyAsync<{
+  //       confirmEmailUserId: User['id'];
+  //       newEmail: User['email'];
+  //     }>(hash, {
+  //       secret: this.configService.getOrThrow('auth.confirmEmailSecret', {
+  //         infer: true,
+  //       }),
+  //     });
 
-      userId = jwtData.confirmEmailUserId;
-      newEmail = jwtData.newEmail;
-    } catch {
-      throw new UnprocessableEntityException({
-        status: HttpStatus.UNPROCESSABLE_ENTITY,
-        errors: {
-          hash: `invalidHash`,
-        },
-      });
-    }
+  //     userId = jwtData.confirmEmailUserId;
+  //     newEmail = jwtData.newEmail;
+  //   } catch {
+  //     throw new UnprocessableEntityException({
+  //       status: HttpStatus.UNPROCESSABLE_ENTITY,
+  //       errors: {
+  //         hash: `invalidHash`,
+  //       },
+  //     });
+  //   }
 
-    const user = await this.usersService.findById(userId);
+  //   const user = await this.usersService.findById(userId);
 
-    if (!user) {
-      throw new NotFoundException({
-        status: HttpStatus.NOT_FOUND,
-        error: `notFound`,
-      });
-    }
+  //   if (!user) {
+  //     throw new NotFoundException({
+  //       status: HttpStatus.NOT_FOUND,
+  //       error: `notFound`,
+  //     });
+  //   }
 
-    user.email = newEmail;
-    user.status = StatusEnum.active;
+  //   user.email = newEmail;
+  //   user.status = StatusEnum.active;
 
-    await this.usersService.update(user.id, user);
-  }
+  //   await this.usersService.update(user.id, user);
+  // }
 
   async forgotPassword(email: string): Promise<void> {
     const user = await this.usersService.findByEmail(email);

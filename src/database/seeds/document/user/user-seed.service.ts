@@ -27,11 +27,9 @@ export class UserSeedService {
         password: password,
         firstName: 'Super',
         lastName: 'Admin',
-        role: {
-          _id: RoleEnum.admin.toString(),
-        },
-        status: {
-          _id: StatusEnum.active.toString(),
+        status: StatusEnum.ACTIVE,
+        employmentInformation: {
+          role: RoleEnum.ADMIN,
         },
       });
       await data.save();
@@ -50,11 +48,9 @@ export class UserSeedService {
         password: password,
         firstName: 'John',
         lastName: 'Doe',
-        role: {
-          _id: RoleEnum.user.toString(),
-        },
-        status: {
-          _id: StatusEnum.active.toString(),
+        status: StatusEnum.ACTIVE,
+        employmentInformation: {
+          role: RoleEnum.USER,
         },
       });
 

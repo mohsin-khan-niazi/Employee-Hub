@@ -1,4 +1,7 @@
 export enum StatusEnum {
-  'active' = 'active',
-  'inactive' = 'inactive',
+  ACTIVE = 'active',
+  INACTIVE = 'inactive',
+  PERMANENT = 'permanent',
+  ON_CONTRACT = 'on-contract',
+  TERMINATED = 'terminated',
 }
