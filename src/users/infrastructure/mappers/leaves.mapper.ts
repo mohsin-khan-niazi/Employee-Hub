@@ -1,4 +1,4 @@
-import { Leaves as DomainLeaves } from '../../../../domain/leaves';
+import { Leaves as DomainLeaves } from '../../domain/leaves';
 import { Leaves as SchemaLeaves } from '../entities/leaves.schema';
 
 export class LeavesMapper {

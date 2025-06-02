@@ -1,4 +1,4 @@
-import { EmploymentInformation as DomainEmploymentInformation } from '../../../../domain/employment.information';
+import { EmploymentInformation as DomainEmploymentInformation } from '../../domain/employment.information';
 import { EmploymentInformation as SchemaEmploymentInformation } from '../entities/employment-information.schema';
 import { Types } from 'mongoose';
 

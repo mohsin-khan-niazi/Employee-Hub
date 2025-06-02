@@ -1,4 +1,4 @@
-import { BankingInformation as DomainBankingInformation } from '../../../../domain/banking-information';
+import { BankingInformation as DomainBankingInformation } from '../../domain/banking-information';
 import { BankingInformation as SchemaBankingInformation } from '../entities/banking-information.schema';
 
 export class BankingInformationMapper {

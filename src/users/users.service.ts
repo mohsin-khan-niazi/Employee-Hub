@@ -6,7 +6,7 @@ import {
 import { CreateUserDto } from './dto/create-user.dto';
 import { NullableType } from '../utils/types/nullable.type';
 import { FilterUserDto, SortUserDto } from './dto/query-user.dto';
-import { UserRepository } from './infrastructure/persistence/user.repository';
+import { UsersRepository } from './infrastructure/user.repository';
 import { User } from './domain/user';
 import bcrypt from 'bcryptjs';
 import { FilesService } from '../files/files.service';
@@ -19,7 +19,7 @@ import { UpdateUserDto } from './dto/update-user.dto';
 @Injectable()
 export class UsersService {
   constructor(
-    private readonly usersRepository: UserRepository,
+    private readonly usersRepository: UsersRepository,
     private readonly filesService: FilesService,
   ) {}
 
@@ -103,7 +103,7 @@ export class UsersService {
       status = createUserDto.employmentInformation?.status;
     }
 
-    return this.usersRepository.create({
+    const userData = {
       personalInformation: {
         fullName: createUserDto.personalInformation?.fullName,
         fatherName: createUserDto.personalInformation?.fatherName,
@@ -140,7 +140,9 @@ export class UsersService {
       },
       email: email,
       password: password,
-    });
+    };
+
+    return this.usersRepository.create(userData as User);
   }
 
   findManyWithPagination({

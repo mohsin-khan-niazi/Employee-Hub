@@ -1,25 +1,24 @@
 import { Injectable } from '@nestjs/common';
 
-import { NullableType } from '../../../../../utils/types/nullable.type';
-import { FilterUserDto, SortUserDto } from '../../../../dto/query-user.dto';
-import { User } from '../../../../domain/user';
-import { UserRepository } from '../../user.repository';
-import { UserSchemaClass } from '../entities/user.schema';
+import { NullableType } from '../../utils/types/nullable.type';
+import { FilterUserDto, SortUserDto } from '../dto/query-user.dto';
+import { User } from '../domain/user';
+import { UserSchemaClass } from './entities/user.schema';
 import { InjectModel } from '@nestjs/mongoose';
 import { FilterQuery, Model } from 'mongoose';
-import { UserMapper } from '../mappers/user.mapper';
-import { IPaginationOptions } from '../../../../../utils/types/pagination-options';
+import { UserMapper } from './mappers/user.mapper';
+import { IPaginationOptions } from '../../utils/types/pagination-options';
 
 @Injectable()
-export class UsersDocumentRepository implements UserRepository {
+export class UsersRepository {
   constructor(
     @InjectModel('User')
-    private readonly usersModel: Model<UserSchemaClass>,
+    private readonly UserModel: Model<UserSchemaClass>,
   ) {}
 
   async create(data: User): Promise<User> {
     const persistenceModel = UserMapper.toPersistence(data);
-    const createdUser = new this.usersModel(persistenceModel);
+    const createdUser = new this.UserModel(persistenceModel);
     const userObject = await createdUser.save();
     return UserMapper.toDomain(userObject);
   }
@@ -40,8 +39,7 @@ export class UsersDocumentRepository implements UserRepository {
       };
     }
 
-    const userObjects = await this.usersModel
-      .find(where)
+    const userObjects = await this.UserModel.find(where)
       .sort(
         sortOptions?.reduce(
           (accumulator, sort) => ({
@@ -59,19 +57,19 @@ export class UsersDocumentRepository implements UserRepository {
   }
 
   async findById(id: User['id']): Promise<NullableType<User>> {
-    const userObject = await this.usersModel.findById(id);
+    const userObject = await this.UserModel.findById(id);
     return userObject ? UserMapper.toDomain(userObject) : null;
   }
 
   async findByIds(ids: User['id'][]): Promise<User[]> {
-    const userObjects = await this.usersModel.find({ _id: { $in: ids } });
+    const userObjects = await this.UserModel.find({ _id: { $in: ids } });
     return userObjects.map((userObject) => UserMapper.toDomain(userObject));
   }
 
   async findByEmail(email: User['email']): Promise<NullableType<User>> {
     if (!email) return null;
 
-    const userObject = await this.usersModel.findOne({ email });
+    const userObject = await this.UserModel.findOne({ email });
     return userObject ? UserMapper.toDomain(userObject) : null;
   }
 
@@ -80,13 +78,13 @@ export class UsersDocumentRepository implements UserRepository {
     delete clonedPayload.id;
 
     const filter = { _id: id.toString() };
-    const user = await this.usersModel.findOne(filter);
+    const user = await this.UserModel.findOne(filter);
 
     if (!user) {
       return null;
     }
 
-    const userObject = await this.usersModel.findOneAndUpdate(
+    const userObject = await this.UserModel.findOneAndUpdate(
       filter,
       UserMapper.toPersistence({
         ...UserMapper.toDomain(user),
@@ -99,7 +97,7 @@ export class UsersDocumentRepository implements UserRepository {
   }
 
   async remove(id: User['id']): Promise<void> {
-    await this.usersModel.deleteOne({
+    await this.UserModel.deleteOne({
       _id: id.toString(),
     });
   }

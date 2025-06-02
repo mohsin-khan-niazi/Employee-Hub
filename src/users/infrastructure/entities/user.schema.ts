@@ -1,7 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { now, HydratedDocument } from 'mongoose';
 
-import { EntityDocumentHelper } from '../../../../../utils/document-entity-helper';
+import { EntityDocumentHelper } from '../../../utils/document-entity-helper';
 import { PersonalInformation } from './personal-information.schema';
 import { EmploymentInformation } from 'src/users/domain/employment.information';
 import { Leaves } from './leaves.schema';

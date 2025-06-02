@@ -1,7 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument } from 'mongoose';
 
-import { FileSchemaClass } from '../../../../../files/infrastructure/persistence/document/entities/file.schema';
+import { FileSchemaClass } from '../../../files/infrastructure/persistence/document/entities/file.schema';
 
 export type PersonalInformationDocument = HydratedDocument<PersonalInformation>;
 

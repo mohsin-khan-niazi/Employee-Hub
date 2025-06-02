@@ -1,6 +1,6 @@
-import { PersonalInformation as DomainPersonalInformation } from '../../../../domain/personal-information';
+import { PersonalInformation as DomainPersonalInformation } from '../../domain/personal-information';
 import { PersonalInformation as SchemaPersonalInformation } from '../entities/personal-information.schema';
-import { FileMapper } from '../../../../../files/infrastructure/persistence/document/mappers/file.mapper';
+import { FileMapper } from '../../../files/infrastructure/persistence/document/mappers/file.mapper';
 
 export class PersonalInformationMapper {
   static toDomain(raw: SchemaPersonalInformation): DomainPersonalInformation {

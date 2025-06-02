@@ -1,4 +1,4 @@
-import { User } from '../../../../domain/user';
+import { User } from '../../domain/user';
 import { UserSchemaClass } from '../entities/user.schema';
 import { PersonalInformationMapper } from './personal-information.mapper';
 import { EmploymentInformationMapper } from './employment-information.mapper';
