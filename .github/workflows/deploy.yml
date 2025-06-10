@@ -33,6 +33,7 @@ jobs:
           key: ${{ secrets.SSH_STAGING_KEY }}
           script: |
             cd /var/www/attendance/stg-haazri/backend
+            git stash
             git pull origin v2
             npm install
             npm build
