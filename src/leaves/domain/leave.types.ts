@@ -7,7 +7,7 @@ export enum LeaveType {
   ANNUAL = 'annual',
   MATERNITY = 'maternity',
   PATERNITY = 'paternity',
-  WFH = 'wfh',
+  WFH = 'work-from-home',
   ASSET_REQUEST = 'asset-request',
 }
 
