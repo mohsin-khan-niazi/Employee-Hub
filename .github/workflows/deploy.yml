@@ -35,6 +35,7 @@ jobs:
             cd /var/www/attendance/stg-haazri/backend
             git pull origin v2
             npm install
+            npm build
             pm2 restart stg-haazri-BE --update-env
 
       # Step 5: Notify Discord on Success
