@@ -12,6 +12,7 @@ import { MailModule } from './mail/mail.module';
 import { HomeModule } from './home/home.module';
 import { MongooseModule } from '@nestjs/mongoose';
 import { MongooseConfigService } from './database/mongoose-config.service';
+import { LeavesModule } from './leaves/leaves.module';
 
 const infrastructureDatabaseModule = MongooseModule.forRootAsync({
   useClass: MongooseConfigService,
@@ -25,11 +26,12 @@ const infrastructureDatabaseModule = MongooseModule.forRootAsync({
       envFilePath: ['.env'],
     }),
     infrastructureDatabaseModule,
-    UsersModule,
-    FilesModule,
-    AuthModule,
-    MailModule,
     HomeModule,
+    AuthModule,
+    UsersModule,
+    LeavesModule,
+    FilesModule,
+    MailModule,
   ],
 })
 export class AppModule {}
