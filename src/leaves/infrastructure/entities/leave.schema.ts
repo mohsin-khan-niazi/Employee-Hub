@@ -2,7 +2,6 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument, Types, now } from 'mongoose';
 import { LeaveStatus, LeaveType } from '../../domain/leave.types';
 import { EntityDocumentHelper } from 'src/utils/document-entity-helper';
-import { UserSchemaClass } from 'src/users/infrastructure/entities/user.schema';
 
 export type LeaveSchemaDocument = HydratedDocument<LeaveSchemaClass>;
 
@@ -16,7 +15,7 @@ export class LeaveSchemaClass extends EntityDocumentHelper {
 
   @Prop({
     type: Types.ObjectId,
-    ref: UserSchemaClass.name,
+    ref: 'User',
     required: true,
   })
   requestedBy: string;
@@ -54,7 +53,7 @@ export class LeaveSchemaClass extends EntityDocumentHelper {
 
   @Prop({
     type: Types.ObjectId,
-    ref: UserSchemaClass.name,
+    ref: 'User',
   })
   reviewedBy?: string;
 

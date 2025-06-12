@@ -1,4 +1,6 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty, getSchemaPath } from '@nestjs/swagger';
+import { Type } from 'class-transformer';
+import { PersonalInformation } from 'src/users/domain/personal-information';
 
 export enum LeaveType {
   CASUAL = 'casual',
@@ -33,6 +35,18 @@ export class LeaveDuration {
   isSingleDay: boolean;
 }
 
+export class UserReference {
+  @ApiProperty({
+    type: String,
+  })
+  id: string;
+
+  @ApiProperty({
+    type: Object,
+  })
+  personalInformation: PersonalInformation;
+}
+
 export class Leave {
   @ApiProperty({
     type: String,
@@ -50,9 +64,12 @@ export class Leave {
   description: string;
 
   @ApiProperty({
-    type: String,
+    oneOf: [
+      { type: 'string' },
+      { type: 'object', $ref: getSchemaPath(UserReference) },
+    ],
   })
-  requestedBy: string;
+  requestedBy: string | UserReference;
 
   @ApiProperty({
     type: String,
@@ -63,6 +80,7 @@ export class Leave {
   @ApiProperty({
     type: LeaveDuration,
   })
+  @Type(() => LeaveDuration)
   duration: LeaveDuration;
 
   @ApiProperty({
@@ -77,9 +95,12 @@ export class Leave {
   status: LeaveStatus;
 
   @ApiProperty({
-    type: String,
+    oneOf: [
+      { type: 'string' },
+      { type: 'object', $ref: getSchemaPath(UserReference) },
+    ],
   })
-  reviewedBy?: string;
+  reviewedBy?: string | UserReference;
 
   @ApiProperty({
     type: Date,

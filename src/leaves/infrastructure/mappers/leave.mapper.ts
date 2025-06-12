@@ -1,4 +1,4 @@
-import { Leave } from '../../domain/leave.types';
+import { Leave, UserReference } from '../../domain/leave.types';
 import { LeaveSchemaClass } from '../entities/leave.schema';
 
 export class LeaveMapper {
@@ -7,7 +7,13 @@ export class LeaveMapper {
     domainEntity.id = raw._id.toString();
     domainEntity.title = raw.title;
     domainEntity.description = raw.description;
-    domainEntity.requestedBy = raw.requestedBy.toString();
+
+    if (raw.requestedBy && typeof raw.requestedBy === 'object') {
+      domainEntity.requestedBy = raw.requestedBy as UserReference;
+    } else {
+      domainEntity.requestedBy = raw.requestedBy?.toString() || '';
+    }
+
     domainEntity.type = raw.type;
     domainEntity.duration = {
       startDate: raw.duration.startDate,
@@ -19,7 +25,9 @@ export class LeaveMapper {
     domainEntity.createdAt = raw.createdAt;
     domainEntity.updatedAt = raw.updatedAt;
 
-    if (raw.reviewedBy) {
+    if (raw.reviewedBy && typeof raw.reviewedBy === 'object') {
+      domainEntity.reviewedBy = raw.reviewedBy as UserReference;
+    } else if (raw.reviewedBy) {
       domainEntity.reviewedBy = raw.reviewedBy.toString();
     }
 
@@ -35,7 +43,9 @@ export class LeaveMapper {
 
     persistenceSchema.title = domainEntity.title;
     persistenceSchema.description = domainEntity.description;
-    persistenceSchema.requestedBy = domainEntity.requestedBy;
+
+    persistenceSchema.requestedBy = domainEntity.requestedBy?.toString();
+
     persistenceSchema.type = domainEntity.type;
     persistenceSchema.duration = {
       startDate: domainEntity.duration.startDate,
@@ -44,7 +54,8 @@ export class LeaveMapper {
     };
     persistenceSchema.numberOfDays = domainEntity.numberOfDays;
     persistenceSchema.status = domainEntity.status;
-    persistenceSchema.reviewedBy = domainEntity.reviewedBy;
+
+    persistenceSchema.reviewedBy = domainEntity.reviewedBy?.toString();
 
     return persistenceSchema;
   }
