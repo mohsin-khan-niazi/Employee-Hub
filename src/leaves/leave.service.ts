@@ -33,7 +33,7 @@ export class LeaveService {
 
     const savedLeave = await this.LeaveModel.create(leaveData);
     // TODO: Update leaves counts in the user
-    this.usersService.updateLeavesCounts(userId, numberOfDays, category);
+    await this.usersService.updateLeavesCounts(userId, numberOfDays, category);
     return savedLeave;
   }
 

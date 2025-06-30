@@ -3,7 +3,7 @@ import { now, HydratedDocument } from 'mongoose';
 
 import { EntityDocumentHelper } from '../../../utils/document-entity-helper';
 import { PersonalInformation } from './personal-information.schema';
-import { EmploymentInformation } from 'src/users/domain/employment.information';
+import { EmploymentInformation } from './employment-information.schema';
 import { Leaves } from './leaves.schema';
 import { BankingInformation } from './banking-information.schema';
 
@@ -12,6 +12,7 @@ export type UserSchemaDocument = HydratedDocument<UserSchemaClass>;
 @Schema({
   timestamps: true,
   toJSON: {
+    versionKey: false,
     transform: (doc, ret) => {
       ret.id = ret._id.toString();
       delete ret._id;
@@ -38,12 +39,12 @@ export class UserSchemaClass extends EntityDocumentHelper {
   @Prop({
     type: EmploymentInformation,
   })
-  employmentInformation?: EmploymentInformation;
+  employmentInformation: EmploymentInformation;
 
   @Prop({
     type: Leaves,
   })
-  leavesCount?: Leaves;
+  leavesCount: Leaves;
 
   @Prop({
     type: BankingInformation,

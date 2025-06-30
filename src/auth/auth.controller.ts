@@ -7,22 +7,16 @@ import {
   Request,
   Post,
   UseGuards,
-  // Patch,
   Delete,
   SerializeOptions,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { ApiBearerAuth, ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { AuthEmailLoginDto } from './dto/auth-email-login.dto';
 import { AuthForgotPasswordDto } from './dto/auth-forgot-password.dto';
-// import { AuthConfirmEmailDto } from './dto/auth-confirm-email.dto';
-import { AuthResetPasswordDto } from './dto/auth-reset-password.dto';
-// import { AuthUpdateDto } from './dto/auth-update.dto';
 import { AuthGuard } from '@nestjs/passport';
 import { AuthRegisterLoginDto } from './dto/auth-register-login.dto';
-import { LoginResponseDto } from './dto/login-response.dto';
-import { NullableType } from '../utils/types/nullable.type';
-import { User } from '../users/domain/user';
+import { AuthResetPasswordDto } from './dto/auth-reset-password.dto';
 
 @ApiTags('Auth')
 @Controller('auth')
@@ -33,11 +27,8 @@ export class AuthController {
     groups: ['me'],
   })
   @Post('email/login')
-  @ApiOkResponse({
-    type: LoginResponseDto,
-  })
   @HttpCode(HttpStatus.OK)
-  public login(@Body() loginDto: AuthEmailLoginDto): Promise<LoginResponseDto> {
+  public login(@Body() loginDto: AuthEmailLoginDto) {
     return this.service.validateLogin(loginDto);
   }
 
@@ -73,7 +64,7 @@ export class AuthController {
 
   @Post('reset/password')
   @HttpCode(HttpStatus.NO_CONTENT)
-  resetPassword(@Body() resetPasswordDto: AuthResetPasswordDto): Promise<void> {
+  resetPassword(@Body() resetPasswordDto: AuthResetPasswordDto) {
     return this.service.resetPassword(
       resetPasswordDto.hash,
       resetPasswordDto.password,
@@ -86,12 +77,9 @@ export class AuthController {
   })
   @Get('me')
   @UseGuards(AuthGuard('jwt'))
-  @ApiOkResponse({
-    type: User,
-  })
   @HttpCode(HttpStatus.OK)
-  public me(@Request() request): Promise<NullableType<User>> {
-    return this.service.me(request.user);
+  public me(@Request() request) {
+    return this.service.me(request.user.id);
   }
 
   // @ApiBearerAuth()
@@ -101,13 +89,10 @@ export class AuthController {
   // @Patch('me')
   // @UseGuards(AuthGuard('jwt'))
   // @HttpCode(HttpStatus.OK)
-  // @ApiOkResponse({
-  //   type: User,
-  // })
   // public update(
   //   @Request() request,
   //   @Body() userDto: AuthUpdateDto,
-  // ): Promise<NullableType<User>> {
+  // ) {
   //   return this.service.update(request.user, userDto);
   // }
 
@@ -116,6 +101,6 @@ export class AuthController {
   @UseGuards(AuthGuard('jwt'))
   @HttpCode(HttpStatus.NO_CONTENT)
   public async delete(@Request() request): Promise<void> {
-    return this.service.softDelete(request.user);
+    return this.service.softDelete(request.user.id);
   }
 }

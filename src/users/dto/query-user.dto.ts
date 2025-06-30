@@ -6,7 +6,7 @@ import {
   ValidateNested,
 } from 'class-validator';
 import { Transform, Type, plainToInstance } from 'class-transformer';
-import { User } from '../domain/user';
+import { UserSchemaClass } from '../infrastructure/entities/user.schema';
 
 export class FilterUserDto {
   @ApiPropertyOptional({ type: String })
@@ -20,7 +20,7 @@ export class SortUserDto {
   @ApiProperty()
   @Type(() => String)
   @IsString()
-  orderBy: keyof User;
+  orderBy: keyof UserSchemaClass;
 
   @ApiProperty()
   @IsString()

@@ -34,10 +34,10 @@ export class EmploymentInformation {
     type: String,
     enum: ['active', 'inactive', 'permanent', 'on-contract', 'terminated'],
   })
-  status?: string | null;
+  status: string;
 
   @Prop({ type: String, enum: ['admin', 'user'] })
-  role?: string | null;
+  role: string;
 
   @Prop(
     raw({

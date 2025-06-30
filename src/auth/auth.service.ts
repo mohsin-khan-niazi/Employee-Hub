@@ -7,18 +7,13 @@ import ms from 'ms';
 import { JwtService } from '@nestjs/jwt';
 import bcrypt from 'bcryptjs';
 import { AuthEmailLoginDto } from './dto/auth-email-login.dto';
-// import { AuthUpdateDto } from './dto/auth-update.dto';
 import { AuthRegisterLoginDto } from './dto/auth-register-login.dto';
-import { NullableType } from '../utils/types/nullable.type';
-import { LoginResponseDto } from './dto/login-response.dto';
 import { ConfigService } from '@nestjs/config';
-import { JwtPayloadType } from './strategies/types/jwt-payload.type';
 import { UsersService } from '../users/users.service';
 import { AllConfigType } from '../config/config.type';
 import { MailService } from '../mail/mail.service';
 import { RoleEnum } from '../roles/roles.enum';
 import { StatusEnum } from '../statuses/statuses.enum';
-import { User } from '../users/domain/user';
 
 @Injectable()
 export class AuthService {
@@ -29,7 +24,7 @@ export class AuthService {
     private configService: ConfigService<AllConfigType>,
   ) {}
 
-  async validateLogin(loginDto: AuthEmailLoginDto): Promise<LoginResponseDto> {
+  async validateLogin(loginDto: AuthEmailLoginDto) {
     const user = await this.usersService.findByEmail(loginDto.email);
 
     if (!user) {
@@ -65,7 +60,7 @@ export class AuthService {
     }
 
     const { token, tokenExpires } = await this.signJWT({
-      id: user.id,
+      id: user._id,
       role: user.employmentInformation.role,
     });
 
@@ -213,12 +208,13 @@ export class AuthService {
     });
   }
 
+  // TODO: Revisit this
   async resetPassword(hash: string, password: string): Promise<void> {
-    let userId: User['id'];
+    let userId: string;
 
     try {
       const jwtData = await this.jwtService.verifyAsync<{
-        forgotUserId: User['id'];
+        forgotUserId: string;
       }>(hash, {
         secret: this.configService.getOrThrow('auth.forgotSecret', {
           infer: true,
@@ -251,14 +247,14 @@ export class AuthService {
     await this.usersService.update(user.id, user);
   }
 
-  async me(userJwtPayload: JwtPayloadType): Promise<NullableType<User>> {
-    return this.usersService.findById(userJwtPayload.id);
+  async me(id: string) {
+    return await this.usersService.findById(id);
   }
 
   // async update(
   //   userJwtPayload: JwtPayloadType,
   //   userDto: AuthUpdateDto,
-  // ): Promise<NullableType<User>> {
+  // ) {
   //   const currentUser = await this.usersService.findById(userJwtPayload.id);
 
   //   if (!currentUser) {
@@ -347,11 +343,11 @@ export class AuthService {
   //   return this.usersService.findById(userJwtPayload.id);
   // }
 
-  async softDelete(user: User): Promise<void> {
-    await this.usersService.remove(user.id);
+  async softDelete(id: string): Promise<void> {
+    await this.usersService.remove(id);
   }
 
-  private async signJWT(data: { id: User['id']; role: User['role'] }) {
+  private async signJWT(data: { id: string; role: string }) {
     const tokenExpiresIn = this.configService.getOrThrow('auth.expires', {
       infer: true,
     });

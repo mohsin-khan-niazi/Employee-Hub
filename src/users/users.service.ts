@@ -1,13 +1,12 @@
 import {
+  BadRequestException,
   HttpStatus,
   Injectable,
+  NotFoundException,
   UnprocessableEntityException,
 } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
-import { NullableType } from '../utils/types/nullable.type';
 import { FilterUserDto, SortUserDto } from './dto/query-user.dto';
-import { UsersRepository } from './infrastructure/user.repository';
-import { User } from './domain/user';
 import bcrypt from 'bcryptjs';
 import { FilesService } from '../files/files.service';
 import { RoleEnum } from '../roles/roles.enum';
@@ -15,15 +14,19 @@ import { StatusEnum } from '../statuses/statuses.enum';
 import { IPaginationOptions } from '../utils/types/pagination-options';
 import { FileType } from '../files/domain/file';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { FilterQuery, Model } from 'mongoose';
+import { InjectModel } from '@nestjs/mongoose';
+import { UserSchemaClass } from './infrastructure/entities/user.schema';
 
 @Injectable()
 export class UsersService {
   constructor(
-    private readonly usersRepository: UsersRepository,
+    @InjectModel('User')
+    private readonly UserModel: Model<UserSchemaClass>,
     private readonly filesService: FilesService,
   ) {}
 
-  async create(createUserDto: CreateUserDto): Promise<User> {
+  async create(createUserDto: CreateUserDto) {
     let password: string | undefined = undefined;
 
     if (createUserDto.password) {
@@ -34,9 +37,7 @@ export class UsersService {
     let email: string | null = null;
 
     if (createUserDto.email) {
-      const userObject = await this.usersRepository.findByEmail(
-        createUserDto.email,
-      );
+      const userObject = await this.findByEmail(createUserDto.email);
       if (userObject) {
         throw new UnprocessableEntityException({
           status: HttpStatus.UNPROCESSABLE_ENTITY,
@@ -142,10 +143,11 @@ export class UsersService {
       password: password,
     };
 
-    return this.usersRepository.create(userData as User);
+    const createdUser = new this.UserModel(userData);
+    return createdUser.save();
   }
 
-  findManyWithPagination({
+  async findManyWithPagination({
     filterOptions,
     sortOptions,
     paginationOptions,
@@ -153,36 +155,59 @@ export class UsersService {
     filterOptions?: FilterUserDto | null;
     sortOptions?: SortUserDto[] | null;
     paginationOptions: IPaginationOptions;
-  }): Promise<User[]> {
-    return this.usersRepository.findManyWithPagination({
-      filterOptions,
-      sortOptions,
-      paginationOptions,
-    });
+  }) {
+    const where: FilterQuery<UserSchemaClass> = {};
+    if (filterOptions?.roles?.length) {
+      where['role._id'] = {
+        $in: filterOptions.roles.map((role) => role.toString()),
+      };
+    }
+
+    const users = await this.UserModel.find(where)
+      .sort(
+        sortOptions?.reduce(
+          (accumulator, sort) => ({
+            ...accumulator,
+            [sort.orderBy === '_id' ? '_id' : sort.orderBy]:
+              sort.order.toUpperCase() === 'ASC' ? 1 : -1,
+          }),
+          {},
+        ),
+      )
+      .skip((paginationOptions.page - 1) * paginationOptions.limit)
+      .limit(paginationOptions.limit);
+
+    return users;
   }
 
-  findById(id: User['id']): Promise<NullableType<User>> {
-    return this.usersRepository.findById(id);
+  async findById(id: string) {
+    const user = await this.UserModel.findById(id);
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+    return user;
   }
 
-  findByIds(ids: User['id'][]): Promise<User[]> {
-    return this.usersRepository.findByIds(ids);
+  async findByIds(ids: string[]) {
+    const users = await this.UserModel.find({ _id: { $in: ids } });
+    return users;
   }
 
-  findByEmail(email: User['email']): Promise<NullableType<User>> {
-    return this.usersRepository.findByEmail(email);
+  async findByEmail(email: string) {
+    if (!email) throw new BadRequestException('Email is required');
+
+    const user = await this.UserModel.findOne({ email });
+    if (!user) throw new NotFoundException('User not found');
+    return user;
   }
 
-  async update(
-    id: User['id'],
-    updateUserDto: UpdateUserDto,
-  ): Promise<User | null> {
+  async update(id: string, updateUserDto: UpdateUserDto) {
     let password: string | undefined = undefined;
 
     if (updateUserDto.password) {
-      const userObject = await this.usersRepository.findById(id);
+      const user = await this.findById(id);
 
-      if (userObject && userObject?.password !== updateUserDto.password) {
+      if (user && user?.password !== updateUserDto.password) {
         const salt = await bcrypt.genSalt();
         password = await bcrypt.hash(updateUserDto.password, salt);
       }
@@ -191,11 +216,9 @@ export class UsersService {
     let email: string | null | undefined = undefined;
 
     if (updateUserDto.email) {
-      const userObject = await this.usersRepository.findByEmail(
-        updateUserDto.email,
-      );
+      const user = await this.findByEmail(updateUserDto.email);
 
-      if (userObject && userObject.id !== id) {
+      if (user && user.id !== id) {
         throw new UnprocessableEntityException({
           status: HttpStatus.UNPROCESSABLE_ENTITY,
           errors: {
@@ -264,7 +287,7 @@ export class UsersService {
       status = updateUserDto.employmentInformation?.status;
     }
 
-    return this.usersRepository.update(id, {
+    return this.UserModel.findByIdAndUpdate(id, {
       personalInformation: {
         fullName: updateUserDto.personalInformation?.fullName,
         fatherName: updateUserDto.personalInformation?.fatherName,
@@ -304,7 +327,28 @@ export class UsersService {
     });
   }
 
-  async remove(id: User['id']): Promise<void> {
-    await this.usersRepository.remove(id);
+  async remove(id: string) {
+    await this.UserModel.findByIdAndDelete(id);
+  }
+
+  async updateLeavesCounts(id: string, leaves: number, type: string) {
+    const user = await this.findById(id);
+    if (!user) throw new NotFoundException('User not found');
+
+    const count = user.leavesCount[type];
+    if (count - leaves < 0) {
+      throw new UnprocessableEntityException({
+        status: HttpStatus.UNPROCESSABLE_ENTITY,
+        message: 'Leaves not enough',
+        errors: {
+          leaves: 'leavesNotEnough',
+        },
+      });
+    }
+
+    user.leavesCount[type] = leaves;
+
+    await user.save();
+    return true;
   }
 }
