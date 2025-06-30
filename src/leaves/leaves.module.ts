@@ -2,15 +2,16 @@ import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { LeaveController } from './leave.controller';
 import { LeaveService } from './leave.service';
-import { LeaveRepository } from './infrastructure/leave.repository';
-import { LeaveSchema } from './infrastructure/entities/leave.schema';
+import { LeaveSchema, Leaves } from './leave.schema';
+import { UsersModule } from 'src/users/users.module';
 
 @Module({
   imports: [
-    MongooseModule.forFeature([{ name: 'Leave', schema: LeaveSchema }]),
+    MongooseModule.forFeature([{ name: Leaves.name, schema: LeaveSchema }]),
+    UsersModule,
   ],
   controllers: [LeaveController],
-  providers: [LeaveService, LeaveRepository],
+  providers: [LeaveService],
   exports: [LeaveService],
 })
 export class LeavesModule {}

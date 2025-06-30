@@ -12,8 +12,10 @@ export type UserSchemaDocument = HydratedDocument<UserSchemaClass>;
 @Schema({
   timestamps: true,
   toJSON: {
-    virtuals: true,
-    getters: true,
+    transform: (doc, ret) => {
+      ret.id = ret._id.toString();
+      delete ret._id;
+    },
   },
 })
 export class UserSchemaClass extends EntityDocumentHelper {

@@ -1,5 +1,5 @@
 import { IsEnum, IsOptional } from 'class-validator';
-import { LeaveStatus } from '../domain/leave.types';
+import { LeaveStatus } from '../leave.enums';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class UpdateLeaveDto {

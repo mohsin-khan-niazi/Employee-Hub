@@ -26,7 +26,7 @@ export class LeaveController {
 
   @Post()
   create(@Body() createLeaveDto: CreateLeaveDto, @Request() req) {
-    return this.leaveService.createLeave(createLeaveDto, req.user.id);
+    return this.leaveService.createLeave(req.user.id, createLeaveDto);
   }
 
   @Get()

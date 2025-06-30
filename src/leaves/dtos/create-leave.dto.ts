@@ -2,13 +2,11 @@ import {
   IsDate,
   IsEnum,
   IsNotEmpty,
-  IsNumber,
-  IsOptional,
   IsString,
   ValidateNested,
 } from 'class-validator';
 import { Type } from 'class-transformer';
-import { LeaveType } from '../domain/leave.types';
+import { LeaveCategory, LeaveType } from '../leave.enums';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class LeaveDurationDto {
@@ -17,6 +15,7 @@ export class LeaveDurationDto {
     example: '2024-03-20T00:00:00.000Z',
   })
   @IsDate()
+  @IsNotEmpty()
   @Type(() => Date)
   startDate: Date;
 
@@ -26,23 +25,16 @@ export class LeaveDurationDto {
     required: false,
   })
   @IsDate()
-  @IsOptional()
+  @IsNotEmpty()
   @Type(() => Date)
-  endDate?: Date;
-
-  @ApiProperty({
-    type: Boolean,
-    example: false,
-    required: false,
-  })
-  @IsOptional()
-  isSingleDay?: boolean;
+  endDate: Date;
 }
 
 export class CreateLeaveDto {
   @ApiProperty({
     type: String,
     example: 'Annual Leave Request',
+    required: true,
   })
   @IsString()
   @IsNotEmpty()
@@ -53,7 +45,6 @@ export class CreateLeaveDto {
     example: 'I need to take leave for personal reasons',
   })
   @IsString()
-  @IsNotEmpty()
   description: string;
 
   @ApiProperty({
@@ -61,19 +52,22 @@ export class CreateLeaveDto {
     example: LeaveType.ANNUAL,
   })
   @IsEnum(LeaveType)
-  type: LeaveType;
+  type: string;
+
+  @ApiProperty({
+    type: String,
+    enum: LeaveCategory,
+    default: LeaveCategory.FULL_DAY,
+  })
+  @IsEnum(LeaveCategory)
+  category: string;
 
   @ApiProperty({
     type: LeaveDurationDto,
+    required: true,
   })
   @ValidateNested()
   @Type(() => LeaveDurationDto)
+  @IsNotEmpty()
   duration: LeaveDurationDto;
-
-  @ApiProperty({
-    type: Number,
-    example: 3,
-  })
-  @IsNumber()
-  numberOfDays: number;
 }
