@@ -1,7 +1,7 @@
 import { Transform } from 'class-transformer';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { IsEmail, IsNotEmpty, IsOptional, MinLength } from 'class-validator';
-import { FileDto } from '../../files/dto/file.dto';
+// import { FileDto } from '../../files/dto/file.dto';
 import { lowerCaseTransformer } from '../../utils/transformers/lower-case.transformer';
 import { Types } from 'mongoose';
 
@@ -102,9 +102,9 @@ export class AddPersonalInformationDto {
   @IsOptional()
   phoneNo?: string | null;
 
-  @ApiPropertyOptional({ type: () => FileDto })
-  @IsOptional()
-  photo?: FileDto | null;
+  // @ApiPropertyOptional({ type: () => FileDto })
+  // @IsOptional()
+  // photo?: FileDto | null;
 }
 
 export class AddLeavesCountsDto {

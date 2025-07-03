@@ -12,7 +12,7 @@ import { FilesService } from '../files/files.service';
 import { RoleEnum } from '../roles/roles.enum';
 import { StatusEnum } from '../statuses/statuses.enum';
 import { IPaginationOptions } from '../utils/types/pagination-options';
-import { FileType } from '../files/domain/file';
+// import { FileType } from '../files/domain/file';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { FilterQuery, Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
@@ -49,24 +49,24 @@ export class UsersService {
       email = createUserDto.email;
     }
 
-    let photo: FileType | null | undefined = undefined;
+    // let photo: FileType | null | undefined = undefined;
 
-    if (createUserDto.personalInformation?.photo?.id) {
-      const fileObject = await this.filesService.findById(
-        createUserDto.personalInformation?.photo?.id,
-      );
-      if (!fileObject) {
-        throw new UnprocessableEntityException({
-          status: HttpStatus.UNPROCESSABLE_ENTITY,
-          errors: {
-            photo: 'imageNotExists',
-          },
-        });
-      }
-      photo = fileObject;
-    } else if (createUserDto.personalInformation?.photo === null) {
-      photo = null;
-    }
+    // if (createUserDto.personalInformation?.photo?.id) {
+    //   const fileObject = await this.filesService.findById(
+    //     createUserDto.personalInformation?.photo?.id,
+    //   );
+    //   if (!fileObject) {
+    //     throw new UnprocessableEntityException({
+    //       status: HttpStatus.UNPROCESSABLE_ENTITY,
+    //       errors: {
+    //         photo: 'imageNotExists',
+    //       },
+    //     });
+    //   }
+    //   photo = fileObject;
+    // } else if (createUserDto.personalInformation?.photo === null) {
+    //   photo = null;
+    // }
 
     let role: string | undefined = undefined;
 
@@ -114,7 +114,7 @@ export class UsersService {
         gender: createUserDto.personalInformation?.gender,
         phoneNo: createUserDto.personalInformation?.phoneNo,
         nationalId: createUserDto.personalInformation?.nationalId,
-        photo: photo,
+        // photo: photo,
       },
       employmentInformation: {
         salary: createUserDto.employmentInformation?.salary,
@@ -231,24 +231,24 @@ export class UsersService {
       email = null;
     }
 
-    let photo: FileType | null | undefined = undefined;
+    // let photo: FileType | null | undefined = undefined;
 
-    if (updateUserDto.personalInformation?.photo?.id) {
-      const fileObject = await this.filesService.findById(
-        updateUserDto.personalInformation?.photo?.id,
-      );
-      if (!fileObject) {
-        throw new UnprocessableEntityException({
-          status: HttpStatus.UNPROCESSABLE_ENTITY,
-          errors: {
-            photo: 'imageNotExists',
-          },
-        });
-      }
-      photo = fileObject;
-    } else if (updateUserDto.personalInformation?.photo === null) {
-      photo = null;
-    }
+    // if (updateUserDto.personalInformation?.photo?.id) {
+    //   const fileObject = await this.filesService.findById(
+    //     updateUserDto.personalInformation?.photo?.id,
+    //   );
+    //   if (!fileObject) {
+    //     throw new UnprocessableEntityException({
+    //       status: HttpStatus.UNPROCESSABLE_ENTITY,
+    //       errors: {
+    //         photo: 'imageNotExists',
+    //       },
+    //     });
+    //   }
+    //   photo = fileObject;
+    // } else if (updateUserDto.personalInformation?.photo === null) {
+    //   photo = null;
+    // }
 
     let role: string | undefined = undefined;
 
@@ -296,7 +296,7 @@ export class UsersService {
         gender: updateUserDto.personalInformation?.gender,
         phoneNo: updateUserDto.personalInformation?.phoneNo,
         nationalId: updateUserDto.personalInformation?.nationalId,
-        photo,
+        // photo,
       },
       employmentInformation: {
         salary: updateUserDto.employmentInformation?.salary,
