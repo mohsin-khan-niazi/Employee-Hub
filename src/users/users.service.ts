@@ -197,7 +197,6 @@ export class UsersService {
     if (!email) throw new BadRequestException('Email is required');
 
     const user = await this.UserModel.findOne({ email });
-    if (!user) throw new NotFoundException('User not found');
     return user;
   }
 

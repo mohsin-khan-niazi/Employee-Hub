@@ -9,7 +9,7 @@ export class HomeService {
   appInfo() {
     return {
       name: this.configService.get('app.name', { infer: true }),
-      version: '2.0.2',
+      version: '2.0.3',
     };
   }
 }
