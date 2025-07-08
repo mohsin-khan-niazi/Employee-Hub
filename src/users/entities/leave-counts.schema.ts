@@ -1,10 +1,10 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument } from 'mongoose';
 
-export type LeavesDocument = HydratedDocument<Leaves>;
+export type LeaveCountsDocument = HydratedDocument<LeaveCounts>;
 
 @Schema({ _id: false })
-export class Leaves {
+export class LeaveCounts {
   @Prop({
     type: Number,
     default: 12,
@@ -42,4 +42,4 @@ export class Leaves {
   maternityLeaves?: number;
 }
 
-export const LeavesSchema = SchemaFactory.createForClass(Leaves);
+export const LeavesSchema = SchemaFactory.createForClass(LeaveCounts);

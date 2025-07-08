@@ -6,13 +6,13 @@ import {
 import { UsersController } from './users.controller';
 
 import { UsersService } from './users.service';
-import { FilesModule } from '../files/files.module';
+import { S3Module } from '../s3/s3.module';
 import { MongooseModule } from '@nestjs/mongoose';
-import { UserSchema } from './infrastructure/entities/user.schema';
+import { UserSchema } from './entities/user.schema';
 
 @Module({
   imports: [
-    FilesModule,
+    S3Module,
     MongooseModule.forFeature([{ name: 'User', schema: UserSchema }]),
   ],
   controllers: [UsersController],

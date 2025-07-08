@@ -60,7 +60,7 @@ export class AuthService {
     }
 
     const { token, tokenExpires } = await this.signJWT({
-      id: user._id,
+      id: user._id.toString(),
       role: user.employmentInformation.role,
     });
 

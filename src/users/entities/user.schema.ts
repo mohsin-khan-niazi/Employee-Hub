@@ -1,10 +1,10 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { now, HydratedDocument } from 'mongoose';
 
-import { EntityDocumentHelper } from '../../../utils/document-entity-helper';
+import { EntityDocumentHelper } from '../../utils/document-entity-helper';
 import { PersonalInformation } from './personal-information.schema';
 import { EmploymentInformation } from './employment-information.schema';
-import { Leaves } from './leaves.schema';
+import { LeaveCounts } from './leave-counts.schema';
 import { BankingInformation } from './banking-information.schema';
 
 export type UserSchemaDocument = HydratedDocument<UserSchemaClass>;
@@ -42,9 +42,9 @@ export class UserSchemaClass extends EntityDocumentHelper {
   employmentInformation: EmploymentInformation;
 
   @Prop({
-    type: Leaves,
+    type: LeaveCounts,
   })
-  leavesCount: Leaves;
+  leavesCount: LeaveCounts;
 
   @Prop({
     type: BankingInformation,

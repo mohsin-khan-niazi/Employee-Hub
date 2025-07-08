@@ -8,22 +8,21 @@ import {
 import { CreateUserDto } from './dto/create-user.dto';
 import { FilterUserDto, SortUserDto } from './dto/query-user.dto';
 import bcrypt from 'bcryptjs';
-import { FilesService } from '../files/files.service';
+import { S3Service } from '../s3/s3.service';
 import { RoleEnum } from '../roles/roles.enum';
 import { StatusEnum } from '../statuses/statuses.enum';
 import { IPaginationOptions } from '../utils/types/pagination-options';
-// import { FileType } from '../files/domain/file';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { FilterQuery, Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
-import { UserSchemaClass } from './infrastructure/entities/user.schema';
+import { UserSchemaClass } from './entities/user.schema';
 
 @Injectable()
 export class UsersService {
   constructor(
     @InjectModel('User')
     private readonly UserModel: Model<UserSchemaClass>,
-    private readonly filesService: FilesService,
+    private readonly s3Service: S3Service,
   ) {}
 
   async create(createUserDto: CreateUserDto) {

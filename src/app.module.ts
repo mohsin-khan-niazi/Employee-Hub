@@ -1,12 +1,12 @@
 import { Module } from '@nestjs/common';
 import { UsersModule } from './users/users.module';
-import { FilesModule } from './files/files.module';
+import { S3Module } from './s3/s3.module';
 import { AuthModule } from './auth/auth.module';
 import databaseConfig from './database/config/database.config';
 import authConfig from './auth/config/auth.config';
 import appConfig from './config/app.config';
 import mailConfig from './mail/config/mail.config';
-import fileConfig from './files/config/file.config';
+import s3Config from './s3/config/s3.config';
 import { ConfigModule } from '@nestjs/config';
 import { MailModule } from './mail/mail.module';
 import { HomeModule } from './home/home.module';
@@ -22,7 +22,7 @@ const infrastructureDatabaseModule = MongooseModule.forRootAsync({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      load: [databaseConfig, authConfig, appConfig, mailConfig, fileConfig],
+      load: [databaseConfig, authConfig, appConfig, mailConfig, s3Config],
       envFilePath: ['.env'],
     }),
     infrastructureDatabaseModule,
@@ -30,7 +30,7 @@ const infrastructureDatabaseModule = MongooseModule.forRootAsync({
     AuthModule,
     UsersModule,
     LeavesModule,
-    FilesModule,
+    S3Module,
     MailModule,
   ],
 })

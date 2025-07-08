@@ -6,7 +6,7 @@ import {
   ValidateNested,
 } from 'class-validator';
 import { Transform, Type, plainToInstance } from 'class-transformer';
-import { UserSchemaClass } from '../infrastructure/entities/user.schema';
+import { UserSchemaClass } from '../entities/user.schema';
 
 export class FilterUserDto {
   @ApiPropertyOptional({ type: String })
