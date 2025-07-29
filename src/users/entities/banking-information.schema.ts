@@ -8,17 +8,17 @@ export class BankingInformation {
   @Prop({
     type: String,
   })
-  bankName?: string | null;
+  bankName: string;
 
   @Prop({
     type: String,
   })
-  accountTitle?: string | null;
+  accountTitle: string;
 
   @Prop({
     type: String,
   })
-  accountNumber?: string | null;
+  accountNumber: string;
 }
 
 export const BankingInformationSchema =

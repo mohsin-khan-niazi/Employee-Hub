@@ -1,8 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument } from 'mongoose';
-
-// import { FileSchemaClass } from '../../../files/infrastructure/persistence/document/entities/file.schema';
-
 export type PersonalInformationDocument = HydratedDocument<PersonalInformation>;
 
 @Schema({ _id: false })
@@ -10,48 +7,47 @@ export class PersonalInformation {
   @Prop({
     type: String,
   })
-  fullName?: string | null;
+  fullName: string;
 
   @Prop({
     type: String,
   })
-  fatherName?: string | null;
+  fatherName: string;
 
   @Prop({
     type: String,
   })
-  nationality?: string | null;
+  nationality: string;
 
   @Prop({
     type: String,
   })
-  address?: string | null;
+  address: string;
 
   @Prop({
     type: String,
   })
-  birthDate?: string | null;
+  birthDate: string;
 
   @Prop({
     type: String,
   })
-  gender?: string | null;
+  gender: string;
 
   @Prop({
     type: String,
   })
-  phoneNo?: string | null;
+  phoneNo: string;
 
   @Prop({
     type: String,
   })
-  nationalId?: string | null;
+  nationalId: string;
 
-  // TODO: Revisit this
-  // @Prop({
-  //   type: FileSchemaClass,
-  // })
-  // photo?: FileSchemaClass | null;
+  @Prop({
+    type: String,
+  })
+  photo: string;
 }
 export const PersonalInformationSchema =
   SchemaFactory.createForClass(PersonalInformation);

@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { now, HydratedDocument } from 'mongoose';
+import { HydratedDocument } from 'mongoose';
 
 import { EntityDocumentHelper } from '../../utils/document-entity-helper';
 import { PersonalInformation } from './personal-information.schema';
@@ -24,12 +24,12 @@ export class UserSchemaClass extends EntityDocumentHelper {
     type: String,
     unique: true,
   })
-  email?: string | null;
+  email: string;
 
   @Prop({
     type: String,
   })
-  password?: string;
+  password: string;
 
   @Prop({
     type: PersonalInformation,
@@ -49,26 +49,17 @@ export class UserSchemaClass extends EntityDocumentHelper {
   @Prop({
     type: BankingInformation,
   })
-  bankingInformation?: BankingInformation;
+  bankingInformation: BankingInformation;
 
   @Prop({
     type: String,
   })
-  role?: string | null;
+  role: string;
 
   @Prop({
     type: String,
   })
-  status?: string | null;
-
-  @Prop({ default: now })
-  createdAt: Date;
-
-  @Prop({ default: now })
-  updatedAt: Date;
-
-  @Prop()
-  deletedAt: Date;
+  status: string;
 }
 
 export const UserSchema = SchemaFactory.createForClass(UserSchemaClass);

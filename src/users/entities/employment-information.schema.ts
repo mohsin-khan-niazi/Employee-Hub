@@ -3,7 +3,7 @@ import { Document, Types } from 'mongoose';
 
 export type EmploymentInformationDocument = EmploymentInformation & Document;
 
-@Schema({ timestamps: true })
+@Schema({ _id: false })
 export class EmploymentInformation {
   @Prop(
     raw({
@@ -12,23 +12,23 @@ export class EmploymentInformation {
       exchangeRate: { type: Number },
     }),
   )
-  salary?: {
-    pkr: number | null;
-    aed: number | null;
-    exchangeRate: number | null;
+  salary: {
+    pkr: number;
+    aed: number;
+    exchangeRate: number;
   };
 
   @Prop({ type: Date })
-  joiningDate?: Date | null;
+  joiningDate: Date;
 
   @Prop({ type: String })
-  designation?: string | null;
+  designation: string;
 
   @Prop({ type: String })
-  department?: string | null;
+  department: string;
 
   @Prop({ type: Types.ObjectId, ref: 'User' })
-  reportsTo?: Types.ObjectId | null;
+  reportsTo: string;
 
   @Prop({
     type: String,
@@ -46,8 +46,8 @@ export class EmploymentInformation {
     }),
   )
   shiftHours?: {
-    start?: string | null;
-    end?: string | null;
+    start: string;
+    end: string;
   };
 }
 

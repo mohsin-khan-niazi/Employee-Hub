@@ -9,37 +9,37 @@ export class LeaveCounts {
     type: Number,
     default: 12,
   })
-  casualLeaves?: number;
+  casualLeaves: number;
 
   @Prop({
     type: Number,
     default: 12,
   })
-  sickLeaves?: number;
+  sickLeaves: number;
 
   @Prop({
     type: Number,
     default: 8,
   })
-  emergencyLeaves?: number;
+  emergencyLeaves: number;
 
   @Prop({
     type: Number,
     default: 22,
   })
-  workFromHome?: number;
+  workFromHome: number;
 
   @Prop({
     type: Number,
     default: 12,
   })
-  annualLeaves?: number;
+  annualLeaves: number;
 
   @Prop({
     type: Number,
     default: 60,
   })
-  maternityLeaves?: number;
+  maternityLeaves: number;
 }
 
 export const LeavesSchema = SchemaFactory.createForClass(LeaveCounts);
