@@ -1,4 +1,4 @@
-name: Haazri backend CI/CD
+name: EmployeeHub backend CI/CD
 
 on:
   push:
@@ -21,30 +21,30 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Deploy to Haazri Staging via SSH
+      - name: Deploy to EmployeeHub Staging via SSH
         uses: appleboy/ssh-action@master
         with:
           host: 64.227.5.203
           username: root
           key: ${{ secrets.SSH_STAGING_KEY }}
           script: |
-            cd /var/www/attendance/stg-haazri/backend
+            cd /var/www/attendance/stg-employeehub/backend
             git stash
-            GIT_SSH_COMMAND="ssh -i ~/.ssh/haazri-backend -o StrictHostKeyChecking=no" git pull origin v2
+            GIT_SSH_COMMAND="ssh -i ~/.ssh/employeehub-backend -o StrictHostKeyChecking=no" git pull origin v2
             npm install
             npm run build
-            pm2 restart stg-haazri-BE --update-env
+            pm2 restart stg-employeehub-BE --update-env
 
       - name: Notify Discord on Success
         if: success()
         run: |
           curl -X POST -H "Content-Type: application/json" \
-          --data "{\"embeds\": [{\"title\": \"🎉 Haazri backend deployed successfully!\", \"description\": \"API is live at [api-stg.haazri.org/docs](https://api-stg.haazri.org/docs)\", \"color\": 3066993}]}" \
+          --data "{\"embeds\": [{\"title\": \"🎉 EmployeeHub backend deployed successfully!\", \"description\": \"API is live at [api-stg.employeehub.org/docs](https://api-stg.employeehub.org/docs)\", \"color\": 3066993}]}" \
           ${{ secrets.STAGING_DISCORD_WEBHOOK_URL }}
 
       - name: Notify Discord on Failure
         if: failure()
         run: |
           curl -X POST -H "Content-Type: application/json" \
-          --data "{\"embeds\": [{\"title\": \"❌ Haazri backend deployment failed!\", \"description\": \"Something went wrong. Check the logs for details.\", \"color\": 15158332}]}" \
+          --data "{\"embeds\": [{\"title\": \"❌ EmployeeHub backend deployment failed!\", \"description\": \"Something went wrong. Check the logs for details.\", \"color\": 15158332}]}" \
           ${{ secrets.STAGING_DISCORD_WEBHOOK_URL }}

@@ -27,8 +27,8 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe(validationOptions));
 
   const options = new DocumentBuilder()
-    .setTitle('Haazri API')
-    .setDescription('Haazri API docs for Aleh Attendance System')
+    .setTitle('EmployeeHub API')
+    .setDescription('EmployeeHub API docs')
     .setVersion('1.0')
     .addBearerAuth()
     .build();

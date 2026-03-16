@@ -58,7 +58,7 @@ export class MailService {
 
     return await this.send({
       to: mailData.to,
-      from: 'hr@aleh.tech',
+      from: 'hr@gmail.com',
       subject: `Welcome to ${appName}`,
       html,
     });
@@ -95,7 +95,7 @@ export class MailService {
 
     return await this.send({
       to: mailData.to,
-      from: 'hr@aleh.tech',
+      from: 'hr@gmail.com',
       subject: 'Reset Your Password',
       html,
     });
@@ -114,7 +114,7 @@ export class MailService {
   //   });
   //   return await this.send({
   //     to,
-  //     from: 'hr@aleh.tech',
+  //     from: 'hr@gmail.com',
   //     templateId: 'd-7134eaed59a94290b0675d76259e8557',
   //     subject: `${type} request ${status}!`,
   //     dynamicTemplateData: {
@@ -128,10 +128,10 @@ export class MailService {
   // }
 
   // async sendSalaryLink(month, link, name, to) {
-  //   const url = `https://attendance-api.aleh.tech/generateSlip/${link}`;
+  //   const url = `https://attendance-api.gmail.com/generateSlip/${link}`;
   //   return await this.send({
   //     to,
-  //     from: 'hr@aleh.tech',
+  //     from: 'hr@gmail.com',
   //     subject: `${month}'s Salary slip is here!`,
   //     templateId: 'd-d6a2c46d474846879468eca92e906a4c',
   //     dynamicTemplateData: {
